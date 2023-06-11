@@ -7,25 +7,42 @@ generate_checksums: true
 generate_local_vars: true
 
 # set desired site name
-# site_name: mysitename.com
+site_name: cips.nyist.edu.cn
 
 # set desired boot domain
-# boot_domain: boot.mysitename.com
-
+boot_domain: pxe.nyist.edu.cn
+boot_timeout: 600000
 # set boot version
 # boot_version: "2.x"
 
 # bootloader_tftp_enabled: false
 # bootloader_https_enabled: true
 # bootloader_http_enabled: true
-
+generate_disks_arm: true
 # set release overrides from standard netboot.xyz defaults
 # release_overrides:
 #   alpinelinux:
 #     name: "Alpine Linux"
 #   fedora:
 #     mirror: "mirrors.kernel.org"
-
+release_overrides:
+   archlinux:
+      mirror: https://mirror.nyist.edu.cn
+   centos:
+      mirror: https://mirror.nyist.edu.cn
+   debian:
+      mirror: https://mirror.nyist.edu.cn
+   fedora:
+      mirror: https://mirror.nyist.edu.cn
+   kali:
+      mirror: https://mirror.nyist.edu.cn
+   openEuler:
+      mirror: https://mirror.nyist.edu.cn
+   openbsd:
+      mirror: https://mirror.nyist.edu.cn
+   ubuntu:
+      mirror: https://mirror.nyist.edu.cn
+   
 # set utilitiesefi_overrides from standard netboot.xyz defaults for EFI utilities
 # utilitiesefi_overrides:
 #  supergrub:
@@ -45,4 +62,4 @@ early_menu_contents: |
    ### early menu overrides
    ### used to set early ipxe options such as custom console & logo
    # console --x 1024 --y 768
-   # console --picture https://boot.netboot.xyz/logo.png
+   console --picture https://pxe.nyist.edu.cn/bg.png
