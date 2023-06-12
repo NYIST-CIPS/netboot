@@ -227,13 +227,13 @@ endpoints:
     flavor: default
     kernel: backbox-6-default-squash
   kde-neon-user:
-    path: /ubuntu-squash/releases/download/20230601-0716-702c76ea/
+    path: /ubuntu-squash/releases/download/20230608-0713-702c76ea/
     files:
     - vmlinuz
     - filesystem.squashfs
     - initrd.lz
     os: neon
-    version: 20230601-0716
+    version: 20230608-0713
     flavor: user
     kernel: kde-neon-user
   regolith-current:
@@ -522,7 +522,7 @@ endpoints:
     os: blackarch
     version: current
   bluestar:
-    path: /asset-mirror/releases/download/6.3.3-2023.05.22-475894cd/
+    path: /asset-mirror/releases/download/6.3.5-2023.06.01-475894cd/
     files:
     - initrd
     - vmlinuz
@@ -1072,31 +1072,31 @@ endpoints:
     os: memtest86-free
     version: '10.4'
   gentoo-x86:
-    path: /asset-mirror/releases/download/20230529T170225Z-c0630a5f/
+    path: /asset-mirror/releases/download/20230605T170204Z-c0630a5f/
     files:
     - image.squashfs
     - initrd
     - vmlinuz
     os: gentoo
-    version: 20230529T170225Z
+    version: 20230605T170204Z
     arch: x86
   gentoo-arm64:
-    path: /asset-mirror/releases/download/20230528T234658Z-d29572ce/
+    path: /asset-mirror/releases/download/20230604T234701Z-d29572ce/
     files:
     - image.squashfs
     - initrd
     - vmlinuz
     os: gentoo
-    version: 20230528T234658Z
+    version: 20230604T234701Z
     arch: arm64
   gentoo-amd64:
-    path: /asset-mirror/releases/download/20230528T163158Z-abe575fe/
+    path: /asset-mirror/releases/download/20230604T170201Z-abe575fe/
     files:
     - image.squashfs
     - initrd
     - vmlinuz
     os: gentoo
-    version: 20230528T163158Z
+    version: 20230604T170201Z
     arch: amd64
   tails:
     path: /asset-mirror/releases/download/5.13-29645174/
@@ -1254,13 +1254,13 @@ endpoints:
     kernel: clonezilla-debian-testing-i686
     arch: i686
   clonezilla-ubuntu-testing-amd64:
-    path: /ubuntu-squash/releases/download/20230527-mantic-4ef16ee0/
+    path: /ubuntu-squash/releases/download/20230608-mantic-4ef16ee0/
     files:
     - filesystem.squashfs
     - initrd
     - vmlinuz
     os: clonezilla
-    version: 20230527-mantic
+    version: 20230608-mantic
     flavor: testing
     kernel: clonezilla-ubuntu-testing-amd64
     arch: amd64
@@ -1973,7 +1973,7 @@ endpoints:
     version: '7'
     kernel: elementaryos-7-default-squash
   ubuntu-22.10-LXQT-squash:
-    path: /ubuntu-squash/releases/download/22.10-dbcb3286/
+    path: /ubuntu-squash/releases/download/22.10-f1dc5249/
     files:
     - filesystem.squashfs
     - initrd
@@ -2154,3 +2154,18 @@ endpoints:
     version: '23.04'
     flavor: kylin
     kernel: ubuntu-23.04-kylin-squash
+  debian-12-live-kernel:
+    path: /debian-core-12/releases/download/12.0.0-825b8b20/
+    files:
+    - initrd
+    - vmlinuz
+    os: debian
+    version: '12'
+  debian-12-default-squash:
+    path: /debian-squash/releases/download/12.0.0-3eeabf1b/
+    files:
+    - filesystem.squashfs
+    os: debian
+    version: '12'
+    flavor: core
+    kernel: debian-12-live-kernel

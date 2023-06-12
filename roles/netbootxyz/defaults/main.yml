@@ -160,8 +160,8 @@ releases:
     mirror: mirrors.kernel.org
     name: Arch Linux
     versions:
-    - code_name: 2023.05.03
-      name: 2023.05.03
+    - code_name: 2023.06.01
+      name: 2023.06.01
   blackarch:
     enabled: true
     menu: linux
@@ -193,11 +193,11 @@ releases:
     mirror: https://builds.coreos.fedoraproject.org
     name: Fedora CoreOS
     versions:
-    - code_name: 38.20230430.3.1
+    - code_name: 38.20230514.3.0
       name: stable
-    - code_name: 38.20230514.2.0
+    - code_name: 38.20230527.2.0
       name: testing
-    - code_name: 38.20230514.1.0
+    - code_name: 38.20230527.1.1
       name: next
   debian:
     archive_mirror: http://archive.debian.org
@@ -208,15 +208,15 @@ releases:
     name: Debian
     versions:
       stable:
+      - code_name: bookworm
+        name: 12.0 (bookworm)
       - code_name: bullseye
         name: 11.0 (bullseye)
       - code_name: buster
         name: 10.0 (buster)
-      - code_name: stretch
-        name: 9.0 (stretch)
       testing:
-      - code_name: bookworm
-        name: bookworm (testing)
+      - code_name: trixie
+        name: trixie (testing)
       - code_name: sid
         name: sid (unstable)
   devuan:
@@ -336,6 +336,8 @@ releases:
       name: nixos-22.05
     - code_name: nixos-22.11
       name: nixos-22.11
+    - code_name: nixos-23.05
+      name: nixos-23.05
     - code_name: nixos-unstable
       name: nixos-unstable
   openEuler:
@@ -397,6 +399,8 @@ releases:
     mirror: http://download.opensuse.org
     name: OpenSUSE
     versions:
+    - code_name: '15.5'
+      name: openSUSE Leap 15.5
     - code_name: '15.4'
       name: openSUSE Leap 15.4
     - code_name: '15.3'
@@ -482,14 +486,14 @@ releases:
     mirror: https://netboot.joyent.com/os/
     name: SmartOS
     versions:
+    - code_name: 20230601T000726Z
+      name: 20230601T000726Z
     - code_name: 20230518T234918Z
       name: 20230518T234918Z
     - code_name: 20230504T000449Z
       name: 20230504T000449Z
     - code_name: 20230420T000908Z
       name: 20230420T000908Z
-    - code_name: 20230406T001127Z
-      name: 20230406T001127Z
   talos:
     enabled: true
     menu: linux
