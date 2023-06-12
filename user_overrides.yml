@@ -11,7 +11,7 @@ site_name: cips.nyist.edu.cn
 
 # set desired boot domain
 boot_domain: pxe.nyist.edu.cn
-boot_timeout: 600000
+boot_timeout: 60000
 # set boot version
 # boot_version: "2.x"
 
@@ -27,21 +27,23 @@ generate_disks_arm: true
 #     mirror: "mirrors.kernel.org"
 release_overrides:
    archlinux:
-      mirror: https://mirror.nyist.edu.cn
+      mirror: mirror.nyist.edu.cn
    centos:
-      mirror: https://mirror.nyist.edu.cn
+      mirror: http://mirror.nyist.edu.cn
    debian:
-      mirror: https://mirror.nyist.edu.cn
+      mirror: http://mirror.nyist.edu.cn
    fedora:
-      mirror: https://mirror.nyist.edu.cn
+      mirror: http://mirror.nyist.edu.cn
    kali:
-      mirror: https://mirror.nyist.edu.cn
+      mirror: http://mirror.nyist.edu.cn
    openEuler:
-      mirror: https://mirror.nyist.edu.cn
+      base_dir : openeuler
+      mirror: http://mirror.nyist.edu.cn
    openbsd:
-      mirror: https://mirror.nyist.edu.cn
+      base_dir: OpenBSD
+      mirror: http://mirror.nyist.edu.cn
    ubuntu:
-      mirror: https://mirror.nyist.edu.cn
+      mirror: http://mirror.nyist.edu.cn
    
 # set utilitiesefi_overrides from standard netboot.xyz defaults for EFI utilities
 # utilitiesefi_overrides:
