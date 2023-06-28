@@ -10,7 +10,7 @@ iseq ${buildarch} arm64 && set arch arm64 ||
 :skip_arch_detect
 chain --autofree boot.cfg ||
 echo Attempting to retrieve latest upstream version number...
-chain --timeout 5000 https://boot.netboot.xyz/version.ipxe ||
+chain --timeout 5000 http://pxe.nyist.edu.cn/version.ipxe ||
 ntp {{ time_server }} ||
 iseq ${cls} serial && goto ignore_cls ||
 set cls:hex 1b:5b:4a  # ANSI clear screen sequence - "^[[J"
@@ -64,7 +64,7 @@ item change_arch ${space} Architecture: ${arch}
 item shell ${space} iPXE shell
 item netinfo ${space} Network card info
 item lspci ${space} PCI Device List
-item about ${space} About netboot.xyz
+item about ${space} About pxe.nyist.edu.cn
 {% if sigs_menu | bool %}
 item --gap Signature Checks:
 {% if sigs_enabled | bool %}
@@ -122,7 +122,7 @@ iseq ${sigs_enabled} true && set sigs_enabled false || set sigs_enabled true
 goto main_menu
 
 :about
-chain https://boot.netboot.xyz/about.ipxe || chain about.ipxe
+chain http://pxe.nyist.edu.cn/about.ipxe || chain about.ipxe
 goto main_menu
 
 :custom-github
