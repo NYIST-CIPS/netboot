@@ -193,11 +193,11 @@ releases:
     mirror: https://builds.coreos.fedoraproject.org
     name: Fedora CoreOS
     versions:
-    - code_name: 38.20230514.3.0
+    - code_name: 38.20230609.3.0
       name: stable
-    - code_name: 38.20230527.2.0
+    - code_name: 38.20230625.2.0
       name: testing
-    - code_name: 38.20230527.1.1
+    - code_name: 38.20230625.1.0
       name: next
   debian:
     archive_mirror: http://archive.debian.org
@@ -293,8 +293,8 @@ releases:
     mirror: https://downloads.ipfire.org
     name: IPFire
     versions:
-    - code_name: 2.27-core174
-      name: 2.27 Core174
+    - code_name: 2.27-core175
+      name: 2.27 Core175
   k3os:
     enabled: true
     menu: linux
@@ -362,6 +362,9 @@ releases:
     mirror: http://ftp.openbsd.org
     name: OpenBSD
     versions:
+    - code_name: '7.3'
+      image_ver: '73'
+      name: '7.3'
     - code_name: '7.2'
       image_ver: '72'
       name: '7.2'
@@ -486,14 +489,14 @@ releases:
     mirror: https://netboot.joyent.com/os/
     name: SmartOS
     versions:
+    - code_name: 20230615T000418Z
+      name: 20230615T000418Z
     - code_name: 20230601T000726Z
       name: 20230601T000726Z
     - code_name: 20230518T234918Z
       name: 20230518T234918Z
     - code_name: 20230504T000449Z
       name: 20230504T000449Z
-    - code_name: 20230420T000908Z
-      name: 20230420T000908Z
   talos:
     enabled: true
     menu: linux
