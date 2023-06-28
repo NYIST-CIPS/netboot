@@ -1,4 +1,6 @@
 ---
+# set debug mod
+ipxe_debug_enabled: false
 
 # overrides defaults in netbootxyz role
 generate_menus: true
@@ -12,13 +14,28 @@ site_name: cips.nyist.edu.cn
 # set desired boot domain
 boot_domain: pxe.nyist.edu.cn
 boot_timeout: 60000
+# set ntp server
+time_server: ntp.nyist.edu.cn
 # set boot version
 # boot_version: "2.x"
+# set cert location
+#cert_dir: "/ansible/certs"
+#cert_file_filename: ca-nyist.crt
+
+## set bootdisk file name
+#bootloader_disks:
+#  - "cips.nyist.edu.cn"
+#  - "cips.nyist.edu.cn-metal"
 
 # bootloader_tftp_enabled: false
-# bootloader_https_enabled: true
-# bootloader_http_enabled: true
+bootloader_https_enabled: true
+bootloader_http_enabled: true
 generate_disks_arm: true
+generate_disks_hybrid: true
+generate_disks_linux: true
+generate_disks_rpi: false
+generate_version_file: true
+
 # set release overrides from standard netboot.xyz defaults
 # release_overrides:
 #   alpinelinux:
@@ -27,23 +44,24 @@ generate_disks_arm: true
 #     mirror: "mirrors.kernel.org"
 release_overrides:
    archlinux:
-      mirror: mirror.nyist.edu.cn
+      mirror: mirrors.nyist.edu.cn
    centos:
-      mirror: http://mirror.nyist.edu.cn
+      mirror: http://mirrors.nyist.edu.cn
    debian:
-      mirror: http://mirror.nyist.edu.cn
+      mirror: http://mirrors.nyist.edu.cn
    fedora:
-      mirror: http://mirror.nyist.edu.cn
+      mirror: http://mirrors.nyist.edu.cn
    kali:
-      mirror: http://mirror.nyist.edu.cn
+      mirror: http://mirrors.nyist.edu.cn
    openEuler:
-      base_dir : openeuler
-      mirror: http://mirror.nyist.edu.cn
+      base_dir: openeuler
+      mirror: http://mirrors.nyist.edu.cn/openeuler
    openbsd:
       base_dir: OpenBSD
-      mirror: http://mirror.nyist.edu.cn
+      mirror: http://mirrors.nyist.edu.cn
    ubuntu:
-      mirror: http://mirror.nyist.edu.cn
+      archive_mirror: http://mirrors.nyist.edu.cn/ubuntu-releases
+      mirror: http://mirrors.nyist.edu.cn
    
 # set utilitiesefi_overrides from standard netboot.xyz defaults for EFI utilities
 # utilitiesefi_overrides:
@@ -59,9 +77,9 @@ release_overrides:
 # win_base_url:
 # rhel_base_url:
 
-early_menu_enabled: false
+early_menu_enabled: true
 early_menu_contents: |
    ### early menu overrides
    ### used to set early ipxe options such as custom console & logo
-   # console --x 1024 --y 768
-   console --picture https://pxe.nyist.edu.cn/bg.png
+   console --x 1024 --y 690
+   console --picture http://pxe.nyist.edu.cn/bg.png
