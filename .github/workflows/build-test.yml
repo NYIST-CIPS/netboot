@@ -16,10 +16,12 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Send start notification to WeCom
-      uses: distributhor/workflow-webhook@v1
+      uses: chf007/action-wechat-work@master
+      env:
+        WECHAT_WORK_BOT_WEBHOOK: ${{ secrets.WECHAT_WEBHOOK_URL }}
       with:
-        webhook_url: ${{ secrets.WECHAT_WEBHOOK_URL }}
-        data: '{"msgtype":"text","text":{"content":"NYIST/netboot 测试构建已开始🚀"}}'
+        msgtype: text
+        content: "NYIST/netboot 测试构建已开始🚀"
         
     - name: Build the Docker image
       run: docker build -t localbuild -f Dockerfile .
@@ -42,7 +44,9 @@ jobs:
         path: buildout/buildout.zip
 
     - name: Send end notification to WeCom
-      uses: distributhor/workflow-webhook@v1
+      uses: chf007/action-wechat-work@master
+      env:
+        WECHAT_WORK_BOT_WEBHOOK: ${{ secrets.WECHAT_WEBHOOK_URL }}
       with:
-        webhook_url: ${{ secrets.WECHAT_WEBHOOK_URL }}
-        data: '{"msgtype":"text","text":{"content":"NYIST/netboot 测试构建成功✨"}}'
+        msgtype: text
+        content: "NYIST/netboot 测试构建成功✨"
