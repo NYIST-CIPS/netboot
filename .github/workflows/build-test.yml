@@ -18,7 +18,7 @@ jobs:
     - name: Send start notification to WeCom
       uses: distributhor/workflow-webhook@v1
       with:
-        url: ${{ secrets.WECHAT_WEBHOOK_URL }}
+        webhook_url: ${{ secrets.WECHAT_WEBHOOK_URL }}
         data: '{"msgtype":"text","text":{"content":"NYIST/netboot 测试构建已开始🚀"}}'
         
     - name: Build the Docker image
@@ -44,5 +44,5 @@ jobs:
     - name: Send end notification to WeCom
       uses: distributhor/workflow-webhook@v1
       with:
-        url: ${{ secrets.WECHAT_WEBHOOK_URL }}
+        webhook_url: ${{ secrets.WECHAT_WEBHOOK_URL }}
         data: '{"msgtype":"text","text":{"content":"NYIST/netboot 测试构建成功✨"}}'
