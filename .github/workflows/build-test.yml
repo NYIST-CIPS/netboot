@@ -1,0 +1,35 @@
+name: Build test ver.
+
+on:
+  push:
+    branches: [ "nyist-pxe" ]
+  pull_request:
+    branches: [ "nyist-pxe" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build -t localbuild -f Dockerfile .
+
+    - name: Build site
+      run: docker run --rm -it -v $(pwd):/buildout localbuild
+
+    - name: Copy pxe background image
+      run: cp pxe_bg.png buildout/
+
+    - name: Create buildout archive
+      run: |
+        cd buildout
+        zip -r buildout.zip .
+
+    - name: Upload buildout artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: buildout-artifact
+        path: buildout/buildout.zip
