@@ -23,8 +23,8 @@ time_server: ntp.nyist.edu.cn
 #cert_file_filename: ca-nyist.crt
 
 ## set bootdisk file name
-#bootloader_disks:
-#  - "cips.nyist.edu.cn"
+bootloader_disks:
+- cips.nyist.edu.cn
 #  - "cips.nyist.edu.cn-metal"
 
 # bootloader_tftp_enabled: false
