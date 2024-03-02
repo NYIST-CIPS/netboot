@@ -1,4 +1,4 @@
-name: Build test ver.
+name: Build cips@nyist test ver.
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
       run: docker build -t localbuild -f Dockerfile .
 
     - name: Build site
-      run: docker run --rm -it -v $(pwd):/buildout localbuild
+      run: docker run --rm -v $(pwd):/buildout localbuild
 
     - name: Copy pxe background image
       run: cp pxe_bg.png buildout/
