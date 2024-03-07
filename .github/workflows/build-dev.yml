@@ -23,7 +23,7 @@ jobs:
         #msgtype: text
         #content: "NYIST-CIPS/netboot 🔱nyist-pxe-dev 测试构建已开始🚀"
         msgtype: template_card
-        template_card: '{"msgtype":"template_card","template_card":{"card_type":"news_notice","source":{"icon_url":"https://github.githubassets.com/favicons/favicon-dark.png","desc":"GitHub Actions 自动通知","desc_color":0},"main_title":{"title":"${{GITHUB.REPOSITORY}} 🔱${{GITHUB.REF_NAME}}工作流已启动🚀","desc":" 当前事件：${{GITHUB.event_name}} "},"card_image":{"url":"https://gh-card.dev/repos/${{GITHUB.REPOSITORY}}.png","aspect_ratio":2.25},"image_text_area":{"type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}/commit/${{GITHUB.WORKFLOW_SHA}}","title":"${{GITHUB.ACTOR}}","desc":"${{GITHUB.WORKFLOW_SHA}}","image_url":"https://avatars.githubusercontent.com/u/${{GITHUB.ACTOR_ID}}"},"vertical_content_list":[{"title":"Actions已开始执行","desc":"敬请关注后续提示"}],"horizontal_content_list":[{"keyname":"Actions发起人","value":"${{GITHUB.TRIGGERING_ACTOR}}"},{"keyname":"Actions ID","value":"${{GITHUB.RUN_ID}}","type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}/actions/runs/${{GITHUB.RUN_ID}}"},{"keyname":"构建成果","value":"请稍后","type":2,"media_id":"1"}],"jump_list":[{"type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}","title":"${{GITHUB.REPOSITORY}} 仓库页面"}],"card_action":{"type":1,"url":"https://work.weixin.qq.com/?from=openApi","appid":"APPID","pagepath":"PAGEPATH"}}}'
+        template_card: '{"msgtype":"template_card","template_card":{"card_type":"news_notice","source":{"icon_url":"https://github.githubassets.com/favicons/favicon-dark.png","desc":"GitHub Actions 自动通知","desc_color":0},"main_title":{"title":"${{GITHUB.REPOSITORY}} 🔱${{GITHUB.REF_NAME}}工作流已启动🚀","desc":" 当前事件：${{GITHUB.event_name}} "},"card_image":{"url":"https://gh-card.dev/repos/${{GITHUB.REPOSITORY}}.png","aspect_ratio":2.25},"image_text_area":{"type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}/commit/${{GITHUB.WORKFLOW_SHA}}","title":"${{GITHUB.ACTOR}}","desc":"${{GITHUB.WORKFLOW_SHA}}","image_url":"https://avatars.githubusercontent.com/u/${{GITHUB.ACTOR_ID}}"},"vertical_content_list":[{"title":"Actions已开始执行...","desc":"敬请关注后续提示"}],"horizontal_content_list":[{"keyname":"Actions发起人","value":"${{GITHUB.TRIGGERING_ACTOR}}"},{"keyname":"Actions ID","value":"${{GITHUB.RUN_ID}}","type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}/actions/runs/${{GITHUB.RUN_ID}}"},{"keyname":"构建成果","value":"请稍后"}],"jump_list":[{"type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}","title":"${{GITHUB.REPOSITORY}} 仓库页面"}],"card_action":{"type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}"}}}'
         
     - name: Build the Docker image
       run: docker build -t localbuild -f Dockerfile .
@@ -42,7 +42,7 @@ jobs:
     - name: Upload buildout artifact
       uses: actions/upload-artifact@v2
       with:
-        name: buildout-artifact
+        name: buildout
         path: buildout/buildout.zip
 
     - name: Send end notification to WeCom
@@ -50,5 +50,14 @@ jobs:
       env:
         WECHAT_WORK_BOT_WEBHOOK: ${{ secrets.WECHAT_WEBHOOK_URL }}
       with:
-        msgtype: text
-        content: "NYIST-CIPS/netboot 🔱nyist-pxe-dev 测试构建成功✨"
+        #msgtype: text
+        #content: "NYIST-CIPS/netboot 🔱nyist-pxe-dev 测试构建成功✨"
+        msgtype: template_card
+        template_card: '{"msgtype":"template_card","template_card":{"card_type":"news_notice","source":{"icon_url":"https://github.githubassets.com/favicons/favicon-dark.png","desc":"GitHub Actions 自动通知","desc_color":0},"main_title":{"title":"${{GITHUB.REPOSITORY}} 🔱${{GITHUB.REF_NAME}}工作流已结束✨","desc":" 当前事件：${{GITHUB.event_name}} "},"card_image":{"url":"https://gh-card.dev/repos/${{GITHUB.REPOSITORY}}.png","aspect_ratio":2.25},"image_text_area":{"type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}/commit/${{GITHUB.WORKFLOW_SHA}}","title":"${{GITHUB.ACTOR}}","desc":"${{GITHUB.WORKFLOW_SHA}}","image_url":"https://avatars.githubusercontent.com/u/${{GITHUB.ACTOR_ID}}"},"vertical_content_list":[{"title":"Actions已结束✔","desc":"即将上传构建成果"}],"horizontal_content_list":[{"keyname":"Actions发起人","value":"${{GITHUB.TRIGGERING_ACTOR}}"},{"keyname":"Actions ID","value":"${{GITHUB.RUN_ID}}","type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}/actions/runs/${{GITHUB.RUN_ID}}"},{"keyname":"构建成果","value":"见下条"}],"jump_list":[{"type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}","title":"${{GITHUB.REPOSITORY}} 仓库页面"}],"card_action":{"type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}"}}}'
+
+    - name: Upload buildout to wecom
+      uses: MeanZhang/wecom-group-robot@v1
+      with:
+        key: ${{ secrets.WECHAT_WEBHOOK_KEY }}
+        msgtype: "file"
+        content: "buildout/buildout.zip"
