@@ -5,12 +5,109 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [2.0.70] - 2023-00-00
+## [2.0.78] - 2024-00-00
+
+## [2.0.77] - 2024-02-24
+
+### Fixed
+
+- Talos menu fixed
+
+### Changed
+
+- Use bootloader_filename instead of site_name for bootloader filenames
+
+## [2.0.76] - 2023-12-31
+
+### Added
+
+- Memtest86+ 6.20 for EFI and Legacy x86_64 modes, leaves 5.01 for Legacy purposes
+  as some issues were noticed loading 6.20 Legacy on KVM where it hangs on
+  loading but works fine using VMware.
+- ARM ISO and USB Images added
+- Tunable make_num_jobs for compiling in parallel
+
+## [2.0.75] - 2023-12-03
+
+### Fixed
+
+- Updated CentOS to be able to pull arm64 images
+- Updates to images that may have been missing curl in the
+  initrd for booting
+
+### Changed
+
+- Uses exit 1 on local boot now to allow for it to roll over
+  to next device in UEFI (Issue #1276)
+- Switches to using proxmox iso from asset releases so that it can
+  also be installed via local assets (Issue #1350)
+
+## [2.0.74] - 2023-11-14
+
+### Changed
+
+- Update rescue flag to include inst. prefix on RHEL based distros
+
+### Fixed
+
+- Minor bugs in Fedora menu
+- CAINE booting
+
+### Removed
+
+- Anarchy Linux
+
+## [2.0.73] - 2023-10-13
+
+### Added
+
+- Fedora 39 stubbed out for release later this month
+- Ubuntu 23.10
+- Text UI support for Proxmox Distros
+
+### Fixed
+
+- Fixed an issue with Fedora would error with "Could not boot"
+
+### Removed
+
+- Remove AVG as it's no longer maintained
+
+## [2.0.72] - 2023-09-15
+
+### Fixed
+
+- Fixed an issue where Proxmox/QEMU users using Legacy mode would hang or
+  reboot when loading an OS. Would have affected 2.0.70 and 2.0.71 releases.
+
+## [2.0.71] - 2023-09-09
+
+### Added
+
+- Added NixOS option for ARM
+
+### Changed
+
+- Adjusted bootloader logic for detecting v6 and v6 scenarios
+
+### Fixed
+
+- Kickstart URLs were broken on RHEL based distros if text install
+  was being used.
+
+## [2.0.70] - 2023-07-03
 
 ### Added
 
 - Enabled CERT_CMD in iPXE
 - Added Debian 12
+- Disable pci scan option when loaded on ARM/EFI as command isn't supported
+- Building snp and snponly builds for Equinix Metal
+
+### Changed
+
+- Changed default Equinix Metal builds to use snp to ensure more stable start
+- Changed CentOS 9 Stream mirror due to it no longer working with iPXE
 
 ## [2.0.69] - 2023-05-07
 
@@ -204,7 +301,7 @@ All notable changes to this project will be documented in this file.
 - Added Fedora 35 Beta
 - Added Ubuntu 21.10 Impish Indri Beta
 
-### Fixes
+### Fixed
 
 - Corrected architecture naming on k3os
 
@@ -228,13 +325,13 @@ All notable changes to this project will be documented in this file.
 
 ## [2.0.47] - 2021-08-30
 
-### Fixes
+### Fixed
 
 - Corrects an issue with loading 32-bit linux menu on 64-bit platforms (https://github.com/netbootxyz/netboot.xyz/issues/978)
 
 ## [2.0.46] - 2021-08-29
 
-### Fixes
+### Fixed
 
 - Fix incorrect arch introduced on Ubuntu
 
@@ -246,7 +343,7 @@ All notable changes to this project will be documented in this file.
 - Enables utility menu for Packet non EFI
 - Updated arm menu
 
-### Fixes
+### Fixed
 
 - Refactor of architecture checks, better support for i386 and arch distros
 - Arm64 and i386 options work now
@@ -265,7 +362,7 @@ All notable changes to this project will be documented in this file.
 - Adds Param command to iPXE builds
 - Adds next-server and version info when booted locally
 
-### Fixes
+### Fixed
 
 - Fixes console issues for Ubuntu and Debian on Packet
 
@@ -284,7 +381,7 @@ All notable changes to this project will be documented in this file.
 - Adds ability to change install priority on Ubuntu Legacy
 - Adds a toggle for enabling local-vars.ipxe
 
-### Fixes
+### Fixed
 
 - Adjustments to index.html template, adds description
 - Readme tweaks for new site
@@ -295,7 +392,7 @@ All notable changes to this project will be documented in this file.
 
 - Debian 11 (Bullseye) ahead of release
 
-### Fixes
+### Fixed
 
 - Gentoo more reliable, switches to initrd.magic to avoid modifying initrd
 - Fixes to Mint menu to populate options correctly
@@ -308,7 +405,7 @@ All notable changes to this project will be documented in this file.
 - Adds support for openEuler
 - Adds ping command to iPXE build
 
-### Fixes
+### Fixed
 
 - NixOS working again, using images and iPXE configs that are generated upstream
 
@@ -330,7 +427,7 @@ All notable changes to this project will be documented in this file.
 
 - Enabled gzip and zlib support on iPXE binaries
 
-### Fixes
+### Fixed
 
 - Check for legacy undionly filename if running menu locally
 
@@ -356,7 +453,7 @@ All notable changes to this project will be documented in this file.
 
 - Ubuntu 21.04 Installer and Live Versions
 
-### Fixes
+### Fixed
 
 - Version number variable tweaks
 
@@ -378,7 +475,7 @@ All notable changes to this project will be documented in this file.
 
 - Support for AlmaLinux
 
-### Fixes
+### Fixed
 
 - Updated Debian Kernel for Live images, transitioned over to Actions from Travis
 
@@ -391,7 +488,7 @@ All notable changes to this project will be documented in this file.
 
 ## [2.0.32] - 2021-02-09
 
-### Fixes
+### Fixed
 
 - Update to latest Ubuntu maintenance release
 
@@ -402,7 +499,7 @@ All notable changes to this project will be documented in this file.
 
 ## [2.0.31] - 2021-01-18
 
-### Fixes
+### Fixed
 
 - Fixes results too large bug introduced on Ubuntu menu
 
@@ -463,7 +560,7 @@ All notable changes to this project will be documented in this file.
 - Switches builder to netbootxyz docker image on Github Container Registry
 - Simplfied Fedora Live menu
 
-### Fixes
+### Fixed
 
 - Bugfix on NixOS menu
 
@@ -715,23 +812,29 @@ All notable changes to this project will be documented in this file.
 - FerenOS
 - Q4OS 3.10
 
-### Fixes
+### Fixed
 
 - FreeBSD working
-- Captures upstream iPXE version as ${ipxe_version}
+- Captures upstream iPXE version as ipxe_version
 - Fixes Packet and GCE Versioning
 
 ## [2.0.3] - 2020-01-02
-### Fixes
+
+### Fixed
+
 - Fixes for Live CD and Menus
 
 ## [2.0.2] - 2019-12-31
-### Fixes
+
+### Fixed
+
 - Windows fixes, timeout for version checking
 - Fixes for Deepin and Elementary
 
 ## [2.0.1] - 2019-12-27
-### Fixes
+
+### Fixed
+
 - Fixes some index.html issues so that iPXE clients exit properly
 - Change flags on genisoimage reflect el-torito options
 - Move generate_signatures to end of playbook
@@ -741,9 +844,11 @@ All notable changes to this project will be documented in this file.
 - Fixes some discord messaging
 
 ## [2.0.0] - 2019-12-26
+
 ### Changes
 - Switches primary boot.netboot.xyz to deploy deployed with Ansible and sets up 2.x rolling release series
 
 ## [1.9.9] - 2019-12-13
+
 ### Deprecated
 - Pre 2.x series before being deployed with Ansible
