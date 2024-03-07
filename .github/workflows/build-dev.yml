@@ -1,4 +1,4 @@
-name: Build cips@nyist test ver.
+name: Build cips@nyist dev ver.
 
 on:
   push:
@@ -20,8 +20,10 @@ jobs:
       env:
         WECHAT_WORK_BOT_WEBHOOK: ${{ secrets.WECHAT_WEBHOOK_URL }}
       with:
-        msgtype: text
-        content: "NYIST-CIPS/netboot 🔱nyist-pxe-dev 测试构建已开始🚀"
+        #msgtype: text
+        #content: "NYIST-CIPS/netboot 🔱nyist-pxe-dev 测试构建已开始🚀"
+        msgtype: template_card
+        template_card: '{"msgtype":"template_card","template_card":{"card_type":"news_notice","source":{"icon_url":"https://github.githubassets.com/favicons/favicon-dark.png","desc":"GitHub Actions 自动通知","desc_color":0},"main_title":{"title":"${{GITHUB_REPOSITORY}} 🔱${{GITHUB_REF_NAME}}工作流已启动🚀","desc":" 当前事件：${{GITHUB_EVENT_NAME}} "},"card_image":{"url":"https://gh-card.dev/repos/${{GITHUB_REPOSITORY}}.png","aspect_ratio":2.25},"image_text_area":{"type":1,"url":"https://github.com/${{GITHUB_REPOSITORY}}/commit/${{GITHUB_WORKFLOW_SHA}}","title":"${{GITHUB_ACTOR}}","desc":"${{GITHUB_WORKFLOW_SHA}}","image_url":"https://avatars.githubusercontent.com/u/${{GITHUB_ACTOR_ID}}"},"vertical_content_list":[{"title":"Actions已开始执行","desc":"敬请关注后续提示"}],"horizontal_content_list":[{"keyname":"Actions发起人","value":"${{GITHUB_TRIGGERING_ACTOR}}"},{"keyname":"Actions ID","value":"${{GITHUB_RUN_ID}}","type":1,"url":"https://github.com/${{GITHUB_REPOSITORY}}/actions/runs/${{GITHUB_RUN_ID}}"},{"keyname":"构建成果","value":"请稍后","type":2,"media_id":"1"}],"jump_list":[{"type":1,"url":"https://github.com/${{GITHUB_REPOSITORY}}","title":"${{GITHUB_REPOSITORY}} 仓库页面"}],"card_action":{"type":1,"url":"https://work.weixin.qq.com/?from=openApi","appid":"APPID","pagepath":"PAGEPATH"}}}'
         
     - name: Build the Docker image
       run: docker build -t localbuild -f Dockerfile .
