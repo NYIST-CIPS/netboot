@@ -34,7 +34,7 @@ bootloader_http_enabled: true
 generate_disks_arm: true
 generate_disks_hybrid: true
 generate_disks_linux: true
-generate_disks_rpi: true
+#generate_disks_rpi: true
 generate_version_file: true
 
 # set release overrides from standard netboot.xyz defaults
