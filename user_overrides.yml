@@ -28,13 +28,13 @@ time_server: ntp.nyist.edu.cn
 #- cips.nyist.edu.cn
 #- "cips.nyist.edu.cn-metal"
 
-# bootloader_tftp_enabled: false
+#bootloader_tftp_enabled: false
 bootloader_https_enabled: true
 bootloader_http_enabled: true
 generate_disks_arm: true
 generate_disks_hybrid: true
 generate_disks_linux: true
-#generate_disks_rpi: false
+generate_disks_rpi: true
 generate_version_file: true
 
 # set release overrides from standard netboot.xyz defaults
