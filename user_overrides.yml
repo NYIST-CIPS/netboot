@@ -23,10 +23,10 @@ time_server: ntp.nyist.edu.cn
 #cert_dir: "/ansible/certs"
 #cert_file_filename: ca-nyist.crt
 
-## set bootdisk file name
-bootloader_disks:
-- cips.nyist.edu.cn
-#  - "cips.nyist.edu.cn-metal"
+# set bootdisk file name
+#bootloader_disks:
+#- cips.nyist.edu.cn
+#- "cips.nyist.edu.cn-metal"
 
 # bootloader_tftp_enabled: false
 bootloader_https_enabled: true
@@ -34,7 +34,7 @@ bootloader_http_enabled: true
 generate_disks_arm: true
 generate_disks_hybrid: true
 generate_disks_linux: true
-generate_disks_rpi: false
+#generate_disks_rpi: false
 generate_version_file: true
 
 # set release overrides from standard netboot.xyz defaults
