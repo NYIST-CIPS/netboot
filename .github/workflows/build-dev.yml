@@ -45,6 +45,22 @@ jobs:
         name: buildout
         path: buildout/buildout.zip
 
+    - name: Deploy to GitHub Pages
+      if: github.repository == 'NYIST-CIPS/netboot' && github.ref == 'refs/heads/nyist-pxe-dev'
+      run: |
+        CINFO="$(git log -1 --pretty="[%h] %an: %s")"
+        cd buildout
+        git init --quiet
+        : > .nojekyll
+        git remote add origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git
+        git fetch --depth=1 origin gh-pages
+        git reset --soft FETCH_HEAD
+        git add --all
+        git -c user.name=GitHub -c user.email=noreply@github.com commit \
+          -m "Auto deploy from GitHub Actions build ${GITHUB_RUN_NUMBER}" \
+          -m "$CINFO"
+        git push origin +HEAD:gh-pages
+
     - name: Send end notification to WeCom
       uses: chf007/action-wechat-work@master
       env:
@@ -53,11 +69,11 @@ jobs:
         #msgtype: text
         #content: "NYIST-CIPS/netboot 🔱nyist-pxe-dev 测试构建成功✨"
         msgtype: template_card
-        template_card: '{"card_type":"news_notice","source":{"icon_url":"https://github.githubassets.com/favicons/favicon-dark.png","desc":"GitHub Actions 自动通知","desc_color":0},"main_title":{"title":"${{GITHUB.REPOSITORY}} 🔱${{GITHUB.REF_NAME}}工作流已结束✨","desc":" 当前事件：${{GITHUB.event_name}} "},"card_image":{"url":"https://gh-card.dev/repos/${{GITHUB.REPOSITORY}}.png","aspect_ratio":2.25},"image_text_area":{"type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}/commit/${{GITHUB.WORKFLOW_SHA}}","title":"${{GITHUB.ACTOR}}","desc":"${{GITHUB.WORKFLOW_SHA}}","image_url":"https://avatars.githubusercontent.com/u/${{GITHUB.ACTOR_ID}}"},"vertical_content_list":[{"title":"Actions已结束✔","desc":"即将上传构建成果"}],"horizontal_content_list":[{"keyname":"Actions发起人","value":"${{GITHUB.TRIGGERING_ACTOR}}"},{"keyname":"Actions ID","value":"${{GITHUB.RUN_ID}}","type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}/actions/runs/${{GITHUB.RUN_ID}}"},{"keyname":"构建成果","value":"见下条"}],"jump_list":[{"type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}","title":"${{GITHUB.REPOSITORY}} 仓库页面"}],"card_action":{"type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}"}}'
+        template_card: '{"card_type":"news_notice","source":{"icon_url":"https://github.githubassets.com/favicons/favicon-dark.png","desc":"GitHub Actions 自动通知","desc_color":0},"main_title":{"title":"${{GITHUB.REPOSITORY}} 🔱${{GITHUB.REF_NAME}}工作流已结束✨","desc":" 当前事件：${{GITHUB.event_name}} "},"card_image":{"url":"https://gh-card.dev/repos/${{GITHUB.REPOSITORY}}.png","aspect_ratio":2.25},"image_text_area":{"type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}/commit/${{GITHUB.WORKFLOW_SHA}}","title":"${{GITHUB.ACTOR}}","desc":"${{GITHUB.WORKFLOW_SHA}}","image_url":"https://avatars.githubusercontent.com/u/${{GITHUB.ACTOR_ID}}"},"vertical_content_list":[{"title":"Actions已结束✔","desc":"即将上传构建成果"}],"horizontal_content_list":[{"keyname":"Actions发起人","value":"${{GITHUB.TRIGGERING_ACTOR}}"},{"keyname":"Actions ID","value":"${{GITHUB.RUN_ID}}","type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}/actions/runs/${{GITHUB.RUN_ID}}"},{"keyname":"构建成果","value":"http://nyist-cips.github.io/netboot/"}],"jump_list":[{"type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}","title":"${{GITHUB.REPOSITORY}} 仓库页面"}],"card_action":{"type":1,"url":"https://github.com/${{GITHUB.REPOSITORY}}"}}'
 
-    - name: Upload buildout to Wecom
-      uses: MeanZhang/wecom-group-robot@v1
-      with:
-        key: ${{ secrets.WECHAT_WEBHOOK_KEY }}
-        msgtype: "file"
-        content: "buildout/buildout.zip"
+    #- name: Upload buildout to Wecom
+    #  uses: MeanZhang/wecom-group-robot@v1
+    #  with:
+    #    key: ${{ secrets.WECHAT_WEBHOOK_KEY }}
+    #    msgtype: "file"
+    #    content: "buildout/buildout.zip"
