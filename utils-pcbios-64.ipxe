@@ -1,0 +1,137 @@
+#!ipxe
+
+:utils_menu
+menu Utilities
+item --gap Utilities:
+item 4mlinux ${space} 4MLinux
+item bootrepair ${space} Boot Repair CD
+item breakin ${space} Breakin
+item caine ${space} CAINE
+item clonezilla ${space} Clonezilla
+item dban ${space} DBAN
+item gparted ${space} GParted
+item grml ${space} Grml
+item kaspersky ${space} Kaspersky Rescue Disk
+item memtest86legacy ${space} Memtest86+ 5.01.0
+item memtest86plus ${space} Memtest86+ 7.00
+item redorescue ${space} RedoRescue
+item rescatux ${space} Rescatux
+item rescuezilla ${space} Rescuezilla
+item shredos ${space} ShredOS
+item supergrub ${space} SuperGRUB
+item systemrescue ${space} System Rescue CD
+item ubcd ${space} Ultimate Boot CD (UBCD)
+item --gap netboot.xyz tools:
+item cmdline ${space} Kernel cmdline params: [${cmdline}]
+item nbxyz_custom_url ${space} Set custom menu [url: ${custom_url}]
+item nbxyz_custom_github ${space} Set Github username [user: ${github_user}]
+item testdistro ${space} Test Distribution ISO
+item nbxyz ${space} netboot.xyz endpoints
+choose --default ${menu} menu || goto utils_exit
+echo ${cls}
+goto ${menu} ||
+chain ${menu}.ipxe || goto utils_exit
+goto utils_exit
+
+:supergrub
+set util_path http://master.dl.sourceforge.net/project/supergrub2/2.04s1/super_grub2_disk_2.04s1/super_grub2_disk_hybrid_2.04s1.iso
+set util_file super_grub2_disk_hybrid_2.04s1.iso
+set util_version 2.04s1
+goto boot_memdisk
+:ubcd
+set util_path https://mirror.sysadminguide.net/ubcd/ubcd539.iso
+set util_file ubcd539.iso
+set util_version 539
+goto boot_memdisk
+
+:bootrepair
+imgfree
+kernel ${live_endpoint}/ubuntu-squash/releases/download/current-e035b00c/vmlinuz ip=dhcp boot=casper netboot=http fetch=${live_endpoint}/ubuntu-squash/releases/download/current-e035b00c/filesystem.squashfs initrd=initrd.magic ${cmdline}
+initrd ${live_endpoint}/ubuntu-squash/releases/download/current-e035b00c/initrd
+boot
+goto utils_exit
+:breakin
+imgfree
+kernel ${live_endpoint}/asset-mirror/releases/download/4.26.1-f22abf78/vmlinuz sshpasswd=breakin startup=breakin initrd=initrd.magic ${cmdline}
+initrd ${live_endpoint}/asset-mirror/releases/download/4.26.1-f22abf78/initrd
+boot
+goto utils_exit
+:caine
+imgfree
+kernel ${live_endpoint}/ubuntu-squash/releases/download/13.0-68785ee5/vmlinuz ip=dhcp boot=casper netboot=http fetch=${live_endpoint}/ubuntu-squash/releases/download/13.0-68785ee5/filesystem.squashfs initrd=initrd.magic ${cmdline}
+initrd ${live_endpoint}/ubuntu-squash/releases/download/13.0-68785ee5/initrd
+boot
+goto utils_exit
+:redorescue
+imgfree
+kernel ${live_endpoint}/asset-mirror/releases/download/4.0.0-838b6fef/vmlinuz boot=live noprompt nocomponents setkmap=us fetch=${live_endpoint}/asset-mirror/releases/download/4.0.0-838b6fef/filesystem.squashfs initrd=initrd.magic ${cmdline}
+initrd ${live_endpoint}/asset-mirror/releases/download/4.0.0-838b6fef/initrd
+boot
+goto utils_exit
+:rescatux
+imgfree
+kernel ${live_endpoint}/debian-squash/releases/download/0.72-beta8-55ca0efd/vmlinuz boot=live fetch=${live_endpoint}/debian-squash/releases/download/0.72-beta8-55ca0efd/filesystem.squashfs selinux=1 security=selinux enforcing=0 initrd=initrd.magic ${cmdline}
+initrd ${live_endpoint}/debian-squash/releases/download/0.72-beta8-55ca0efd/initrd
+boot
+goto utils_exit
+
+:boot_memdisk
+imgfree
+kernel ${memdisk} iso raw
+initrd --name ${util_file} ${util_path}
+echo
+echo MD5sums:
+md5sum memdisk ${util_file}
+boot
+goto utils_exit
+
+:cmdline
+echo If you want to change the default kernel command line parameters
+echo you can override the defaults here.
+echo
+echo Currently set to: ${cmdline}
+echo
+echo -n Enter cmdline parameters: ${} && read cmdline
+goto utils_menu
+
+:memtest86legacy
+imgfree
+kernel https://boot.netboot.xyz/utils/memtest86-5.01.0
+boot
+goto utils_menu
+
+:memtest86plus
+imgfree
+kernel ${live_endpoint}/asset-mirror/releases/download/7.00-014832f7/memtest64.bin
+boot
+goto utils_menu
+
+:nbxyz_custom_url
+echo If you have a customized menu you would like to load into netboot.xyz
+echo set the base path url to your custom ipxe files here. 
+echo It will look for custom.ipxe in that path as the entry point.
+echo
+echo -n Please enter your custom http url here: ${} && read custom_url
+goto utils_menu
+
+:nbxyz_custom_github
+echo Make sure you have a fork of https://github.com/netbootxyz/netboot.xyz-custom.
+echo You can then customize your fork as needed and set up your own custom options.
+echo Once your username is set, a custom option will appear on the main menu.
+echo
+echo -n Please enter your Github username: ${} && read github_user
+goto utils_menu
+
+:testdistro
+echo This option will allow you to test booting an ISO using memdisk. Please
+echo specify the URL of the ISO you want to test and it will automatically
+echo attempt to load the ISO using memdisk.
+echo -n URL: ${} && read distro_iso
+kernel ${memdisk} iso raw
+initrd ${distro_iso}
+boot
+goto utils_menu
+
+:utils_exit
+clear menu
+exit 0

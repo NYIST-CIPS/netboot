@@ -1,0 +1,29 @@
+#!ipxe
+
+goto ${menu} ||
+
+:bsd_menu
+
+menu BSD Installers - Current Arch [ ${arch} ]
+
+# BSD based systems
+item --gap BSD Based Operating Systems
+item freebsd ${space} FreeBSD
+item openbsd ${space} OpenBSD
+choose menu || goto bsd_exit
+
+echo ${cls}
+goto ${menu} ||
+iseq ${sigs_enabled} true && goto verify_sigs || goto change_menu
+
+:verify_sigs
+imgverify ${menu}.ipxe ${sigs}${menu}.ipxe.sig || goto error
+goto change_menu
+
+:change_menu
+chain ${menu}.ipxe || goto error
+goto bsd_menu
+
+:bsd_exit
+clear menu
+exit 0

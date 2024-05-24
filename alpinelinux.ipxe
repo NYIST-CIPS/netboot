@@ -1,0 +1,38 @@
+#!ipxe
+
+# Alpine Linux
+# https://alpinelinux.org
+
+isset ${dhcp-server} && set ipparam ip=dhcp || set ipparam ip=${ip}::${gateway}:${netmask}::eth0:none:${dns}
+
+goto ${menu}
+
+:alpinelinux
+clear alpine_version
+set os Alpine Linux
+set os_arch ${arch}
+iseq ${os_arch} x86_64 && set os_arch x86_64 ||
+iseq ${os_arch} i386 && set os_arch x86 ||
+iseq ${os_arch} arm64 && set os_arch aarch64 ||
+menu ${os} - ${os_arch}
+item --gap Releases
+item v3.20 ${space} ${os} 3.20
+item edge ${space} ${os} Edge (development)
+choose alpine_version || goto alpine_exit
+goto boot
+
+:boot
+set base-url ${alpinelinux_mirror}
+set dir ${alpinelinux_base_dir}/${alpine_version}/releases/${os_arch}/netboot
+set repo-url ${alpinelinux_mirror}/${alpinelinux_base_dir}/${alpine_version}/main
+imgfree
+kernel ${base-url}/${dir}/vmlinuz-lts ${ipparam} alpine_repo=${repo-url} modules=loop,squashfs modloop=${base-url}/${dir}/modloop-lts quiet nomodeset initrd=initrd.magic ${cmdline}
+initrd ${base-url}/${dir}/initramfs-lts
+echo
+echo MD5sums:
+md5sum vmlinuz-lts initramfs-lts
+boot
+
+:alpine_exit
+clear menu
+exit 0

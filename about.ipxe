@@ -1,0 +1,47 @@
+#!ipxe
+set esc:hex 1b
+set bold ${esc:string}[1m
+set ital ${esc:string}[3m
+set under ${esc:string}[4m
+set boldoff ${esc:string}[22m
+set italoff ${esc:string}[23m
+set underoff ${esc:string}[24m
+set fs_bla ${esc:string}[30m
+set fg_red ${esc:string}[31m
+set fg_gre ${esc:string}[32m
+set fg_yel ${esc:string}[33m
+set fg_blu ${esc:string}[34m
+set fg_mag ${esc:string}[35m
+set fg_cya ${esc:string}[36m
+set fg_whi ${esc:string}[37m
+
+:netabout
+menu ${fg_cya}${bold}About PXE-CIPS@NYIST (Version: ${version})
+item exit ${bold}Exit back to main menu...${boldoff}
+item --gap --  ${fg_whi}${bold}--Thanks------------------------------------------------------------------
+item about ${fg_gre}${bold}Thanks for your use CIPS@NYIST PXE Netboot Service!!!
+item --gap --  ${fg_whi}${bold}--Telegram-----------------------------------------------------------------
+item about ${fg_cya}${bold}Join CIPS@NYIST On Telegram: ${fg_whi}${bold}https://t.me/NYISTCIPS
+item --gap --  ${fg_whi}${bold}--GitHub-----------------------------------------------------------------
+item about ${fg_mag}${bold}CIPS@NYIST On Github: ${fg_whi}${bold}https://github.com/NYIST-CIPS/
+item --gap --  ${fg_whi}${bold}--CIPS Site-------------------------------------------------------------------
+item about ${fg_gre}${bold}cips.nyist.edu.cn: ${fg_whi}${bold}https://cips.nyist.edu.cn
+item --gap --  ${fg_whi}${bold}--Nanyang Institute of Technology NIC-------------------------------------------------------------------
+item about ${fg_gre}${bold}xxh.nyist.edu.cn: ${fg_whi}${bold}https://xxh.nyist.edu.cn
+item --gap --  ${fg_whi}${bold}-----------------------------------------------------------------
+isset ${upstream_version} && goto display_version || goto skip_version
+:display_version
+iseq ${version} ${upstream_version} || item --gap --  ${fg_gre}${bold}Latest netboot.xyz version available: ${fg_whi}${bold}${upstream_version}
+item --gap --  ${fg_whi}${bold}-----------------------------------------------------------------
+:skip_version
+choose selected || goto exit
+goto ${selected}
+
+:about
+clear menu
+goto netabout
+
+:exit
+clear menu
+exit
+

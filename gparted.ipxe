@@ -1,0 +1,28 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os GParted Live
+menu ${os} - Current Arch [ ${arch} ]
+item --gap ${os} Versions
+item stable ${space} ${os} stable
+choose live_version || goto live_exit
+goto ${live_version}
+
+
+:stable
+set squash_url ${live_endpoint}/debian-squash/releases/download/1.6.0-3-cff72999/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/1.6.0-3-cff72999/
+goto boot
+
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz boot=live fetch=${squash_url} union=overlay username=user vga=788 initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

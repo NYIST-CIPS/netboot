@@ -1,0 +1,23 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Peppermint
+menu ${os}
+item --gap ${os} Versions
+item 10 ${space} ${os} 10
+choose live_version || goto live_exit
+goto ${live_version}
+
+
+:10-boot
+imgfree
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=http fetch=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0
+

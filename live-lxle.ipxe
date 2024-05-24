@@ -1,0 +1,28 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os LXLE
+menu ${os}
+item --gap ${os} Versions
+item current ${space} ${os} current
+choose live_version || goto live_exit
+goto ${live_version}
+
+
+:current
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/18.04.3-83291c4b/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/18.04.3-83291c4b/
+goto boot
+
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=http fetch=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

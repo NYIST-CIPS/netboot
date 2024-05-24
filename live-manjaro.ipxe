@@ -1,0 +1,42 @@
+#!ipxe
+
+:live_menu
+set os Manjaro
+menu ${os} Live
+set ipparam BOOTIF=${netX/mac} ip=dhcp net.ifnames=0
+item --gap ${os} Live versions
+item current ${space} ${os} Current Stable (21.x)
+choose menu || goto live_exit
+goto ${menu}
+
+:current
+menu ${os} Live Current
+item --gap ${os} Versions
+item current-gnome ${space} ${os} current gnome
+item current-kde ${space} ${os} current kde
+item current-xfce ${space} ${os} current xfce
+choose version || goto live_menu
+goto ${version}
+
+:current-gnome
+set fetch_url ${live_endpoint}/manjaro-squash/releases/download/24.0-minimal-240513-linux69-c0b5ee57/
+set kernel_url ${live_endpoint}/manjaro-squash/releases/download/24.0-minimal-240513-linux69-c0b5ee57/
+goto boot
+:current-kde
+set fetch_url ${live_endpoint}/manjaro-squash/releases/download/24.0-minimal-240513-linux69-cc131ed3/
+set kernel_url ${live_endpoint}/manjaro-squash/releases/download/24.0-minimal-240513-linux69-cc131ed3/
+goto boot
+:current-xfce
+set fetch_url ${live_endpoint}/manjaro-squash/releases/download/24.0-minimal-240513-linux69-dce63f04/
+set kernel_url ${live_endpoint}/manjaro-squash/releases/download/24.0-minimal-240513-linux69-dce63f04/
+goto boot
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz misobasedir=manjaro ${ipparam} miso_http_srv=${fetch_url} nouveau.modeset=1 i915.modeset=1 radeon.modeset=1 driver=free tz=UTC lang=en_US keytable=us initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

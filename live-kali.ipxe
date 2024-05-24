@@ -1,0 +1,28 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Kali Linux
+menu ${os}
+item --gap ${os} Versions
+item kali-xfce-squash ${space} ${os} 2024.1
+choose live_version || goto live_exit
+goto ${live_version}
+
+:kali-xfce-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/2024.1-54fc2a3c/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/2024.1-54fc2a3c/
+set params components
+goto boot
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz boot=live ${params} fetch=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0
+

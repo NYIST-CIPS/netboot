@@ -1,0 +1,159 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Debian Live
+menu ${os}
+item --gap ${os} Versions
+item bookworm ${space} ${os} 12 (bookworm)
+item bullseye ${space} ${os} 11 (bullseye)
+item buster ${space} ${os} 10 (buster)
+choose live_version || goto live_exit
+menu ${os} ${live_version}
+item --gap ${os} Flavors
+goto ${live_version}
+
+:bookworm
+item debian-12-cinnamon-squash ${space} Debian 12 Cinnamon
+item debian-12-default-squash ${space} Debian 12 Core
+item debian-12-gnome-squash ${space} Debian 12 Gnome
+item debian-12-kde-squash ${space} Debian 12 Kde
+item debian-12-lxde-squash ${space} Debian 12 Lxde
+item debian-12-lxqt-squash ${space} Debian 12 Lxqt
+item debian-12-mate-squash ${space} Debian 12 Mate
+item debian-12-xfce-squash ${space} Debian 12 Xfce
+goto flavor_select
+
+:bullseye
+item debian-11-cinnamon-squash ${space} Debian 11 Cinnamon
+item debian-11-default-squash ${space} Debian 11 Core
+item debian-11-gnome-squash ${space} Debian 11 Gnome
+item debian-11-kde-squash ${space} Debian 11 Kde
+item debian-11-lxqt-squash ${space} Debian 11 Lxqt
+item debian-11-mate-squash ${space} Debian 11 Mate
+item debian-11-xfce-squash ${space} Debian 11 Xfce
+goto flavor_select
+
+:buster
+item debian-10-cinnamon-squash ${space} Debian 10 Cinnamon
+item debian-10-default-squash ${space} Debian 10 Core
+item debian-10-gnome-squash ${space} Debian 10 Gnome
+item debian-10-kde-squash ${space} Debian 10 Kde
+item debian-10-lxde-squash ${space} Debian 10 Lxde
+item debian-10-lxqt-squash ${space} Debian 10 Lxqt
+item debian-10-mate-squash ${space} Debian 10 Mate
+item debian-10-xfce-squash ${space} Debian 10 Xfce
+goto flavor_select
+
+:flavor_select
+choose flavor || goto live_menu
+echo ${cls}
+goto ${flavor} ||
+
+:debian-10-cinnamon-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/10.10.0-77fb8dba/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-10/releases/download/10.13.0-960f6051/
+goto boot
+:debian-10-default-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/10.10.0-9728909e/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-10/releases/download/10.13.0-960f6051/
+goto boot
+:debian-10-gnome-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/10.10.0-13fd68d4/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-10/releases/download/10.13.0-960f6051/
+goto boot
+:debian-10-kde-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/10.10.0-fc058090/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-10/releases/download/10.13.0-960f6051/
+goto boot
+:debian-10-lxde-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/10.10.0-ae0d6ef2/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-10/releases/download/10.13.0-960f6051/
+goto boot
+:debian-10-lxqt-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/10.10.0-92b8fed6/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-10/releases/download/10.13.0-960f6051/
+goto boot
+:debian-10-mate-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/10.10.0-e397bfb9/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-10/releases/download/10.13.0-960f6051/
+goto boot
+:debian-10-xfce-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/10.10.0-e94fae4e/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-10/releases/download/10.13.0-960f6051/
+goto boot
+:debian-11-cinnamon-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/11.7.0-66ae1880/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-11/releases/download/11.7.0-95ff084b/
+goto boot
+:debian-11-default-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/11.7.0-bc2052f1/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-11/releases/download/11.7.0-95ff084b/
+goto boot
+:debian-11-gnome-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/11.7.0-7351138e/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-11/releases/download/11.7.0-95ff084b/
+goto boot
+:debian-11-kde-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/12.0.0-8ba8243d/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-11/releases/download/11.7.0-95ff084b/
+goto boot
+:debian-11-lxde-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/12.0.0-60fbf655/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-12/releases/download/12.5.0-e814dabe/
+goto boot
+:debian-11-lxqt-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/11.7.0-27dada40/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-11/releases/download/11.7.0-95ff084b/
+goto boot
+:debian-11-mate-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/11.7.0-45b9e409/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-11/releases/download/11.7.0-95ff084b/
+goto boot
+:debian-11-xfce-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/11.7.0-e20e794c/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-11/releases/download/11.7.0-95ff084b/
+goto boot
+:debian-12-cinnamon-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/12.5.0-c84a8c03/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-12/releases/download/12.5.0-e814dabe/
+goto boot
+:debian-12-default-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/12.5.0-b545a82c/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-12/releases/download/12.5.0-e814dabe/
+goto boot
+:debian-12-gnome-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/12.5.0-d2c07a8a/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-12/releases/download/12.5.0-e814dabe/
+goto boot
+:debian-12-kde-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/12.5.0-90c96885/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-12/releases/download/12.5.0-e814dabe/
+goto boot
+:debian-12-lxde-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/12.5.0-b3449bd8/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-12/releases/download/12.5.0-e814dabe/
+goto boot
+:debian-12-lxqt-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/12.5.0-43f2cd09/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-12/releases/download/12.5.0-e814dabe/
+goto boot
+:debian-12-mate-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/12.5.0-1a8949e5/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-12/releases/download/12.5.0-e814dabe/
+goto boot
+:debian-12-xfce-squash
+set squash_url ${live_endpoint}/debian-squash/releases/download/12.5.0-40a848cc/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-core-12/releases/download/12.5.0-e814dabe/
+goto boot
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz boot=live fetch=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

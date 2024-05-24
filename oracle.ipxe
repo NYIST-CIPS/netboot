@@ -1,0 +1,52 @@
+#!ipxe
+
+isset ${dhcp-server} && set ipparam ip=dhcp || set ipparam ip=${ip}::${gateway}:${netmask}:::none nameserver=${dns}
+set ipparam BOOTIF=${netX/mac} ${ipparam}
+
+goto ${menu} ||
+
+:oracle_menu
+set os Oracle Linux
+menu ${os}
+set os_arch ${arch}
+iseq ${os_arch} x86_64 && set os_arch x86_64 ||
+iseq ${os_arch} arm64 && set os_arch aarch64 ||
+item --gap ${os} Versions
+item 7 ${space} ${os} 7
+item 8 ${space} ${os} 8
+item 9 ${space} ${os} 9
+item 9 ${space} ${os} 9
+choose version || goto oracle_exit
+goto ${version}_${os_arch}
+
+:7_x86_64
+set url ${live_endpoint}/asset-mirror/releases/download/u9-41493433/
+set repo https://yum.oracle.com/repo/OracleLinux/OL7/latest/${os_arch}
+goto boot
+
+:8_x86_64
+set url ${live_endpoint}/asset-mirror/releases/download/6-853a47d3/
+set repo https://yum.oracle.com/repo/OracleLinux/OL8/baseos/latest/${os_arch}
+goto boot
+
+:9_aarch64
+set url ${live_endpoint}/asset-mirror/releases/download/U4-f2411221/
+set repo https://yum.oracle.com/repo/OracleLinux/OL9/baseos/latest/${os_arch}
+goto boot
+
+:9_x86_64
+set url ${live_endpoint}/asset-mirror/releases/download/U4-5d86c3df/
+set repo https://yum.oracle.com/repo/OracleLinux/OL9/baseos/latest/${os_arch}
+goto boot
+
+
+:boot
+imgfree
+kernel ${url}vmlinuz ${ipparam} inst.repo=${repo} root=live:${url}squashfs.img ro rd.live.image rd.lvm=0 rd.luks=0 rd.md=0 rd.dm=0 initrd=initrd.magic ${cmdline}
+initrd ${url}initrd
+boot
+
+:oracle_exit
+clear menu
+exit 0
+

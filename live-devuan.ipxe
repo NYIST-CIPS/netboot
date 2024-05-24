@@ -1,0 +1,28 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Devuan
+menu ${os}
+item --gap ${os} Versions
+item 2-ascii ${space} ${os} 2 ascii
+choose live_version || goto live_exit
+goto ${live_version}
+
+
+:2-ascii
+set squash_url ${live_endpoint}/debian-squash/releases/download/2.1-c1f637a9/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/2.1-c1f637a9/
+goto boot
+
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz boot=live username=devuan fetch=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

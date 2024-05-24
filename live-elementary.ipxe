@@ -1,0 +1,31 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os elementary OS
+menu ${os}
+item --gap ${os} Versions
+item elementaryos-6-default-squash ${space} ${os} 6
+item elementaryos-7-default-squash ${space} ${os} 7
+choose live_version || goto live_exit
+goto ${live_version}
+
+:elementaryos-6-default-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/6-3e90a5ea/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/6-3e90a5ea/
+goto boot
+:elementaryos-7-default-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/7-3e6e05f6/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/7-3e6e05f6/
+goto boot
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper maybe-ubiquity netboot=url url=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

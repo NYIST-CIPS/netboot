@@ -1,0 +1,33 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Deepin
+menu ${os}
+item --gap ${os} Versions
+item 15 ${space} ${os} 15
+item 20.9 ${space} ${os} 20.9
+choose live_version || goto live_exit
+goto ${live_version}
+
+:15
+set squash_url ${live_endpoint}/debian-squash/releases/download/15.11-387f0ae3/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/15.11-387f0ae3/
+goto boot
+
+:20.9
+set squash_url ${live_endpoint}/debian-squash/releases/download/20.9-e3a3a399/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/20.9-e3a3a399/
+goto boot
+
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz boot=live fetch=${squash_url} union=overlay initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

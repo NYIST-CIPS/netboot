@@ -1,0 +1,34 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Parrot OS
+menu ${os}
+item --gap ${os} Versions
+item 6.0-home ${space} ${os} 6.0 home
+item 6.0-security ${space} ${os} 6.0 security
+choose live_version || goto live_exit
+goto ${live_version}
+
+
+:6.0-home
+set squash_url ${live_endpoint}/debian-squash/releases/download/6.0-874f57da/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/6.0-874f57da/
+goto boot
+
+:6.0-security
+set squash_url ${live_endpoint}/debian-squash/releases/download/6.0-6288c350/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/6.0-6288c350/
+goto boot
+
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz boot=live fetch=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

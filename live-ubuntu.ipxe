@@ -1,0 +1,111 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Ubuntu Live
+menu ${os}
+item --gap ${os} Versions
+item jammy ${space} ${os} 22.04
+item focal ${space} ${os} 20.04
+choose live_version || goto live_exit
+menu ${os} ${live_version}
+item --gap ${os} Flavors
+goto ${live_version}
+
+:jammy
+item ubuntu-22.04-Budgie-squash ${space} Ubuntu 22.04 Budgie
+item ubuntu-22.04-KDE-squash ${space} Ubuntu 22.04 Kde
+item ubuntu-22.04-LXQT-squash ${space} Ubuntu 22.04 Lxqt
+item ubuntu-22.04-MATE-squash ${space} Ubuntu 22.04 Mate
+item ubuntu-22.04-XFCE-squash ${space} Ubuntu 22.04 Xfce
+item ubuntu-22.04-default-squash ${space} Ubuntu 22.04 Gnome
+item ubuntu-22.04-kylin-squash ${space} Ubuntu 22.04 Kylin
+goto flavor_select
+
+:focal
+item ubuntu-20.04-Budgie-squash ${space} Ubuntu 20.04 Budgie
+item ubuntu-20.04-KDE-squash ${space} Ubuntu 20.04 Kde
+item ubuntu-20.04-LXQT-squash ${space} Ubuntu 20.04 Lxqt
+item ubuntu-20.04-MATE-squash ${space} Ubuntu 20.04 Mate
+item ubuntu-20.04-XFCE-squash ${space} Ubuntu 20.04 Xfce
+item ubuntu-20.04-default-squash ${space} Ubuntu 20.04 Gnome
+item ubuntu-20.04-kylin-squash ${space} Ubuntu 20.04 Kylin
+goto flavor_select
+
+:flavor_select
+choose flavor || goto live_menu
+echo ${cls}
+goto ${flavor} ||
+
+:ubuntu-20.04-Budgie-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/20.04.6-a64212f3/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/20.04.6-a64212f3/
+goto 20.04-boot
+:ubuntu-20.04-KDE-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/20.04.6-c08faa24/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/20.04.6-c08faa24/
+goto 20.04-boot
+:ubuntu-20.04-LXQT-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/20.04.5-95f04bf8/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/20.04.5-95f04bf8/
+goto 20.04-boot
+:ubuntu-20.04-MATE-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/20.04.6-8e277cc9/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/20.04.6-8e277cc9/
+goto 20.04-boot
+:ubuntu-20.04-XFCE-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/20.04.6-ad603665/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/20.04.6-ad603665/
+goto 20.04-boot
+:ubuntu-20.04-default-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/20.04.6-c92baa25/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/20.04.6-c92baa25/
+goto 20.04-boot
+:ubuntu-20.04-kylin-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/20.04.6-08c13e9b/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/20.04.6-08c13e9b/
+goto 20.04-boot
+:ubuntu-22.04-Budgie-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/22.04.4-7f1ad0e4/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/22.04.4-7f1ad0e4/
+goto 22.04-boot
+:ubuntu-22.04-KDE-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/22.04.4-36909c4f/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/22.04.4-36909c4f/
+goto 22.04-boot
+:ubuntu-22.04-LXQT-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/22.04.4-e60a4189/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/22.04.4-e60a4189/
+goto 22.04-boot
+:ubuntu-22.04-MATE-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/22.04.4-e4bfedfe/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/22.04.4-e4bfedfe/
+goto 22.04-boot
+:ubuntu-22.04-XFCE-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/22.04.4-1a95043e/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/22.04.4-1a95043e/
+goto 22.04-boot
+:ubuntu-22.04-default-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/22.04.4-b0159fca/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/22.04.4-b0159fca/
+goto 22.04-boot
+:ubuntu-22.04-kylin-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/22.04.4-14797330/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/22.04.4-14797330/
+goto 22.04-boot
+:ubuntu-24.04-default-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/24.04-03d79d20/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/24.04-03d79d20/
+goto 24.04-boot
+
+:20.04-boot
+:22.04-boot
+imgfree
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=url url=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

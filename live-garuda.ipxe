@@ -1,0 +1,96 @@
+#!ipxe
+
+# Garuda Linux
+# https://garudalinux.org/
+
+goto ${menu} ||
+
+:live-garuda
+set os Garuda
+menu ${os} Live
+set ipparam BOOTIF=${netX/mac} ip=dhcp net.ifnames=0
+item --gap ${os} Live versions
+item 240428-cinnamon ${space} ${os} Cinnamon (240428)
+item 240428-dr460nized ${space} ${os} Dr460nized (240428)
+item 240428-dr460nized-gaming ${space} ${os} Dr460nized-Gaming (240428)
+item 240428-gnome ${space} ${os} Gnome (240428)
+item 240428-i3wm ${space} ${os} I3wm (240428)
+item 220329-kde-barebones ${space} ${os} Kde-Barebones (220329)
+item 230501-lxqt-kwin ${space} ${os} Lxqt-Kwin (230501)
+item 230501-mate ${space} ${os} Mate (230501)
+item 231029-qtile ${space} ${os} Qtile (231029)
+item 240428-sway ${space} ${os} Sway (240428)
+item 230501-wayfire ${space} ${os} Wayfire (230501)
+item 240428-xfce ${space} ${os} Xfce (240428)
+choose menu || goto live_exit
+goto ${menu}
+
+:240428-cinnamon
+set fetch_url ${live_endpoint}/asset-mirror/releases/download/240428-0b360492/
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/240428-0b360492/
+goto boot
+
+:240428-dr460nized
+set fetch_url ${live_endpoint}/asset-mirror/releases/download/240428-f610be58/
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/240428-f610be58/
+goto boot
+
+:240428-dr460nized-gaming
+set fetch_url ${live_endpoint}/asset-mirror/releases/download/240428-a96201bb/
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/240428-a96201bb/
+goto boot
+
+:240428-gnome
+set fetch_url ${live_endpoint}/asset-mirror/releases/download/240428-c80a21be/
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/240428-c80a21be/
+goto boot
+
+:240428-i3wm
+set fetch_url ${live_endpoint}/asset-mirror/releases/download/240428-d48b8f05/
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/240428-d48b8f05/
+goto boot
+
+:220329-kde-barebones
+set fetch_url ${live_endpoint}/asset-mirror/releases/download/220329-198784ed/
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/220329-198784ed/
+goto boot
+
+:230501-lxqt-kwin
+set fetch_url ${live_endpoint}/asset-mirror/releases/download/230501-f13b4b24/
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/230501-f13b4b24/
+goto boot
+
+:230501-mate
+set fetch_url ${live_endpoint}/asset-mirror/releases/download/230501-3af08aa6/
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/230501-3af08aa6/
+goto boot
+
+:231029-qtile
+set fetch_url ${live_endpoint}/asset-mirror/releases/download/231029-9dfb930b/
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/231029-9dfb930b/
+goto boot
+
+:240428-sway
+set fetch_url ${live_endpoint}/asset-mirror/releases/download/240428-8d451890/
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/240428-8d451890/
+goto boot
+
+:230501-wayfire
+set fetch_url ${live_endpoint}/asset-mirror/releases/download/230501-61b681d1/
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/230501-61b681d1/
+goto boot
+
+:240428-xfce
+set fetch_url ${live_endpoint}/asset-mirror/releases/download/240428-c866e6bf/
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/240428-c866e6bf/
+goto boot
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz misobasedir=garuda ${ipparam} miso_http_srv=${fetch_url} nouveau.modeset=1 i915.modeset=1 radeon.modeset=1 driver=free initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initramfs.img
+boot
+
+:live_exit
+clear menu
+exit 0

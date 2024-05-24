@@ -1,0 +1,41 @@
+#!ipxe
+
+# VMware Photon
+# https://vmware.github.io/photon/
+
+goto ${menu} ||
+
+:photon
+set os VMware Photon
+set os_arch ${arch}
+iseq ${os_arch} x86_64 && set os_arch x86_64 ||
+iseq ${os_arch} arm64 && set os_arch aarch64 ||
+clear photon_choice
+menu ${os}
+item --gap ${os} Installers
+item photon_install ${space} ${os} 4.0 Installer
+choose photon_choice || goto photon_exit
+goto ${photon_choice}
+
+:photon_install
+iseq ${os_arch} x86_64 && goto x86_64 ||
+iseq ${os_arch} aarch64 && goto aarch64 ||
+:x86_64
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/4.0-453a4a7b/
+set photon_version 4.0
+goto photon_boot
+:aarch64
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/4.0-4e0c6bec/
+set photon_version 4.0
+goto photon_boot
+
+:photon_boot
+imgfree
+kernel ${kernel_url}vmlinuz root=/dev/ram0 loglevel=3 repo=https://packages.vmware.com/photon/${photon_version}/photon_release_${photon_version}_${os_arch} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd.img
+boot
+goto photon
+
+:photon_exit
+exit 0
+

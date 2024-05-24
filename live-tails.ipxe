@@ -1,0 +1,34 @@
+#!ipxe
+
+# Tails Operating System
+# https://tails.boum.org/
+
+goto ${menu} ||
+
+:live-tails
+clear tails_version
+set os Tails
+set os_arch ${arch}
+iseq ${os_arch} x86_64 && set os_arch amd64 ||
+menu ${os}
+item --gap ${os} Versions
+item tails_6.2 ${space} ${os} 6.2
+choose tails_version || goto tails_exit
+goto ${tails_version}
+
+:tails_6.2
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/6.2-cfd50f75/
+set iso_version 6.2
+goto boot
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz boot=live fromiso=/tails.iso config nopersistence noprompt timezone=Etc/UTC splash noautologin module=Tails slab_nomerge slub_debug=FZP mce=0 vsyscall=none page_poison=1 init_on_free=1 mds=full,nosmt initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd.img
+initrd ${kernel_url}9990-misc-helpers.sh /usr/lib/live/boot/9990-misc-helpers.sh
+initrd ${kernel_url}tails-${os_arch}-${iso_version}.iso /tails.iso
+boot
+
+:tails_exit
+clear menu
+exit 0

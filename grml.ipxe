@@ -1,0 +1,34 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Grml
+menu ${os} - Current Arch [ ${arch} ]
+item --gap ${os} Versions
+item 2022.11-full ${space} ${os} 2022.11 full
+item 2022.11-small ${space} ${os} 2022.11 small
+choose live_version || goto live_exit
+goto ${live_version}
+
+
+:2022.11-full
+set squash_url ${live_endpoint}/debian-squash/releases/download/2022.11-35e8171b/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/2022.11-35e8171b/
+goto boot
+
+:2022.11-small
+set squash_url ${live_endpoint}/debian-squash/releases/download/2022.11-aedcf620/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/2022.11-aedcf620/
+goto boot
+
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz boot=live fetch=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

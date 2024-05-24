@@ -1,0 +1,138 @@
+#!ipxe
+
+# Tiny Core Linux
+# http://tinycorelinux.net/downloads.html
+
+set tinycore_mirror http://distro.ibiblio.org/tinycorelinux
+
+:arch_menu
+set os Tiny Core Linux
+menu ${os}
+item --gap  Please choose a version below:
+item x86 ${space} ${os} x86 (default)
+item x86_64 ${space} ${os} x86_64
+choose arch || goto tinycore_exit
+goto ${arch} 
+
+:x86
+menu ${os}
+item --gap  Please choose a version below:
+item core ${space} ${os} Core
+item dcorebionic ${space} ${os} dCore Bionic
+item dcorebionicplus ${space} ${os} dCore Bionic Plus
+item dcorejessie ${space} ${os} dCore Jessie
+item dcorejessieplus ${space} ${os} dCore Jessie Plus
+item dcorestretch ${space} ${os} dCore Stretch
+item dcorestretchplus ${space} ${os} dCore Stretch Plus
+item dcoretrusty ${space} ${os} dCore Trusty
+item dcoretrustyplus ${space} ${os} dCore Trusty Plus
+item dcorewheezy ${space} ${os} dCore Wheezy
+item dcorewheezyplus ${space} ${os} dCore Wheezy Plus
+item dcorexenial ${space} ${os} dCore Xenial
+item dcorexenialplus ${space} ${os} dCore Xenial Plus
+choose version || goto tinycore_exit
+goto ${version}
+
+:x86_64
+menu ${os}
+item --gap  Please choose a version below:
+item corepure ${space} ${os} CorePure
+item dcore64bionic ${space} ${os} dCore64 Bionic
+item dcore64bionicplus ${space} ${os} dCore64 Bionic Plus
+item dcore64buster ${space} ${os} dCore64 Buster
+item dcore64busterplus ${space} ${os} dCore64 Buster Plus
+item dcore64stretch ${space} ${os} dCore64 Stretch
+item dcore64stretchplus ${space} ${os} dCore Stretch Plus
+choose version || goto tinycore_exit
+goto ${version}
+
+:core
+set kernel_url ${tinycore_mirror}/15.x/x86/release/distribution_files/vmlinuz
+set initrd_url ${tinycore_mirror}/15.x/x86/release/distribution_files/core.gz
+goto boot
+:corepure
+set kernel_url ${tinycore_mirror}/15.x/x86_64/release/distribution_files/vmlinuz64
+set initrd_url ${tinycore_mirror}/15.x/x86_64/release/distribution_files/corepure64.gz
+goto boot
+:dcorebionic
+set kernel_url ${tinycore_mirror}/dCore/x86/release/dCore-bionic/vmlinuz-bionic
+set initrd_url ${tinycore_mirror}/dCore/x86/release/dCore-bionic/dCore-bionic.gz
+goto boot
+:dcorebionicplus
+set kernel_url ${tinycore_mirror}/dCore/x86/release/dCore-bionic/vmlinuz-bionic
+set initrd_url ${tinycore_mirror}/dCore/x86/release/dCore-bionic/dCorePlus-bionic.gz
+goto boot
+:dcorejessie
+set kernel_url ${tinycore_mirror}/dCore/x86/release/dCore-jessie/vmlinuz-jessie
+set initrd_url ${tinycore_mirror}/dCore/x86/release/dCore-jessie/dCore-jessie.gz
+goto boot
+:dcorejessieplus
+set kernel_url ${tinycore_mirror}/dCore/x86/release/dCore-jessie/vmlinuz-jessie
+set initrd_url ${tinycore_mirror}/dCore/x86/release/dCore-jessie/dCorePlus-jessie.gz
+goto boot
+:dcorestretch
+set kernel_url ${tinycore_mirror}/dCore/x86/release/dCore-stretch/vmlinuz-stretch
+set initrd_url ${tinycore_mirror}/dCore/x86/release/dCore-stretch/dCore-stretch.gz
+goto boot
+:dcorestretchplus
+set kernel_url ${tinycore_mirror}/dCore/x86/release/dCore-stretch/vmlinuz-stretch
+set initrd_url ${tinycore_mirror}/dCore/x86/release/dCore-stretch/dCorePlus-stretch.gz
+goto boot
+:dcoretrusty
+set kernel_url ${tinycore_mirror}/dCore/x86/release/dCore-trusty/vmlinuz-trusty
+set initrd_url ${tinycore_mirror}/dCore/x86/release/dCore-trusty/dCore-trusty.gz
+goto boot
+:dcoretrustyplus
+set kernel_url ${tinycore_mirror}/dCore/x86/release/dCore-trusty/vmlinuz-trusty
+set initrd_url ${tinycore_mirror}/dCore/x86/release/dCore-trusty/dCorePlus-trusty.gz
+goto boot
+:dcorewheezy
+set kernel_url ${tinycore_mirror}/dCore/x86/release/dCore-wheezy/vmlinuz-wheezy
+set initrd_url ${tinycore_mirror}/dCore/x86/release/dCore-wheezy/dCore-wheezy.gz
+goto boot
+:dcorewheezyplus
+set kernel_url ${tinycore_mirror}/dCore/x86/release/dCore-wheezy/vmlinuz-wheezy
+set initrd_url ${tinycore_mirror}/dCore/x86/release/dCore-wheezy/dCorePlus-wheezy.gz
+goto boot
+:dcorexenial
+set kernel_url ${tinycore_mirror}/dCore/x86/release/dCore-xenial/vmlinuz-xenial
+set initrd_url ${tinycore_mirror}/dCore/x86/release/dCore-xenial/dCore-xenial.gz
+goto boot
+:dcorexenialplus
+set kernel_url ${tinycore_mirror}/dCore/x86/release/dCore-xenial/vmlinuz-xenial
+set initrd_url ${tinycore_mirror}/dCore/x86/release/dCore-xenial/dCorePlus-xenial.gz
+goto boot
+:dcore64bionic
+set kernel_url ${tinycore_mirror}/dCore/x86_64/release/dCore-bionic64/vmlinuz-bionic64
+set initrd_url ${tinycore_mirror}/dCore/x86_64/release/dCore-bionic64/dCore-bionic64.gz
+goto boot
+:dcore64bionicplus
+set kernel_url ${tinycore_mirror}/dCore/x86_64/release/dCore-bionic64/vmlinuz-bionic64
+set initrd_url ${tinycore_mirror}/dCore/x86_64/release/dCore-bionic64/dCorePlus-bionic64.gz
+goto boot
+:dcore64buster
+set kernel_url ${tinycore_mirror}/dCore/x86_64/release/dCore-buster64/vmlinuz-buster64
+set initrd_url ${tinycore_mirror}/dCore/x86_64/release/dCore-buster64/dCore-buster64.gz
+goto boot
+:dcore64busterplus
+set kernel_url ${tinycore_mirror}/dCore/x86_64/release/dCore-buster64/vmlinuz-buster64
+set initrd_url ${tinycore_mirror}/dCore/x86_64/release/dCore-buster64/dCorePlus-buster64.gz
+goto boot
+:dcore64stretch
+set kernel_url ${tinycore_mirror}/dCore/x86_64/release/dCore-stretch64/vmlinuz-stretch64
+set initrd_url ${tinycore_mirror}/dCore/x86_64/release/dCore-stretch64/dCore-stretch64.gz
+goto boot
+:dcore64stretchplus
+set kernel_url ${tinycore_mirror}/dCore/x86_64/release/dCore-stretch64/vmlinuz-stretch64
+set initrd_url ${tinycore_mirror}/dCore/x86_64/release/dCore-stretch64/dCorePlus-stretch64.gz
+goto boot
+
+:boot
+imgfree
+kernel ${kernel_url} loglevel=3 initrd=initrd.magic ${cmdline}
+initrd ${initrd_url}
+boot
+
+:tinycore_exit
+clear menu
+exit 0

@@ -1,0 +1,27 @@
+#!ipxe
+
+# VyOS
+# https://vyos.io
+
+goto ${menu}
+
+:vyos
+set os VyOS
+menu ${os} Installers
+item --gap Official Releases
+item rolling ${space} ${os} 1.5 rolling
+choose vyos_version || goto vyos_exit
+goto vyos_boot
+
+:vyos_boot
+imgfree
+set url ${live_endpoint}/debian-squash/releases/download/1.5-rolling-202405240020-0956eeaa/
+kernel ${url}vmlinuz boot=live components hostname=vyos username=live nopersistence noautologin union=overlay console=ttyS0,115200 console=tty0 net.ifnames=0 biosdevname=0 fetch=${url}filesystem.squashfs initrd=initrd.magic ${cmdline}
+initrd ${url}initrd
+
+boot
+goto vyos_exit
+
+:vyos_exit
+clear menu
+exit 0

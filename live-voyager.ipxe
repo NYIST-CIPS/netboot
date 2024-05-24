@@ -1,0 +1,42 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Voyager Live
+menu ${os}
+item --gap ${os} Versions
+item bullseye ${space} ${os} bullseye
+item focal ${space} ${os} focal
+item jammy ${space} ${os} jammy
+choose live_version || goto live_exit
+goto ${live_version}
+
+:bullseye
+set squash_url ${live_endpoint}/debian-squash/releases/download/bullseye-f449bf64/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/bullseye-f449bf64/
+imgfree
+kernel ${kernel_url}vmlinuz boot=live fetch=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:focal
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/focal-594b12a7/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/focal-594b12a7/
+imgfree
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=url url=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:jammy
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/jammy-d0714f36/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/jammy-d0714f36/
+imgfree
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=url url=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+
+:live_exit
+clear menu
+exit 0

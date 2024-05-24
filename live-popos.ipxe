@@ -1,0 +1,63 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Pop os Live
+menu ${os}
+item --gap ${os} Versions
+item jammy ${space} ${os} 22.04
+item focal ${space} ${os} 20.04
+item bionic ${space} ${os} 18.04
+choose live_version || goto live_exit
+menu ${os} ${live_version}
+item --gap ${os} Flavors
+goto ${live_version}
+
+:jammy
+item pop-22.04-default-squash ${space} Pop 22.04 Intel-Amd
+goto flavor_select
+
+:focal
+item pop-20.04-default-squash ${space} Pop 20.04 Intel-Amd
+item pop-20.04-nvidia-squash ${space} Pop 20.04 Nvidia
+goto flavor_select
+
+:bionic
+goto flavor_select
+
+:flavor_select
+choose flavor || goto live_menu
+echo ${cls}
+goto ${flavor} ||
+
+:pop-20.04-default-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/5-66b7e861/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/5-66b7e861/
+goto 20.04-boot
+:pop-20.04-nvidia-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/5-6efd1d75/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/5-6efd1d75/
+goto 20.04-boot
+:pop-22.04-default-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/21-3c299ef8/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/21-3c299ef8/
+goto 22.04-boot
+
+:18.04-boot
+imgfree
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=http fetch=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:20.04-boot
+:22.04-boot
+imgfree
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=url url=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0
+

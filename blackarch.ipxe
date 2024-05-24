@@ -1,0 +1,28 @@
+#!ipxe
+
+# BlackArch Linux Operating System
+# https://blackarch.org/
+
+goto ${menu}
+
+:blackarch
+set os BlackArch
+set ipparam BOOTIF=${netX/mac} ip=dhcp net.ifnames=0
+menu ${os} Installers
+item --gap The Default login is root/blackarch
+item --gap Run blackarch-install once logged in
+item current ${space} ${os} current
+choose blackarch_version || goto blackarch_exit
+goto blackarch_boot
+
+:blackarch_boot
+imgfree
+set url ${live_endpoint}/asset-mirror/releases/download/2023.04.01-d7a6ad88/
+kernel ${url}vmlinuz archisobasedir=blackarch ${ipparam} archiso_http_srv=${url} initrd=initrd.magic ${cmdline}
+initrd ${url}initrd
+boot
+goto blackarch_exit
+
+:blackarch_exit
+clear menu
+exit 0

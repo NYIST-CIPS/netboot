@@ -1,0 +1,22 @@
+#!ipxe
+
+# Rescuezilla Disk imaging
+# https://rescuezilla.com/
+
+:rescuezilla
+set os Rescuezilla
+menu ${os} Live CD
+item rescuezilla_2.5 ${space} ${os} 2.5
+choose rescuezilla_version || goto rescuezilla_exit
+goto ${rescuezilla_version}
+
+:rescuezilla_2.5
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/2.5-2ace42ce/
+imgfree
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=url url=${kernel_url}filesystem.squashfs initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:rescuezilla_exit
+clear menu
+exit 0

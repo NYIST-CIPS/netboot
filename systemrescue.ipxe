@@ -1,0 +1,35 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os System Rescue
+set os_arch ${arch}
+iseq ${os_arch} x86_64 && set os_arch amd64 ||
+iseq ${os_arch} i386 && set os_arch i686 ||
+menu ${os}
+set ipparam BOOTIF=${netX/mac} ip=dhcp net.ifnames=0
+item --gap ${os} Versions
+iseq ${os_arch} amd64 && item 11.01_${os_arch} ${space} ${os} 11.01 ||
+iseq ${os_arch} i686 && item 9.03_${os_arch} ${space} ${os} 9.03 ||
+choose live_version || goto live_exit
+goto ${live_version}
+
+:11.01_amd64
+set url ${live_endpoint}/asset-mirror/releases/download/11.01-dd0f3246/
+goto boot
+
+:9.03_i686
+set url ${live_endpoint}/asset-mirror/releases/download/9.03-0f19cc5c/
+goto boot
+
+
+:boot
+imgfree
+kernel ${url}vmlinuz archisobasedir=sysresccd ${ipparam} archiso_http_srv=${url} initrd=initrd.magic ${cmdline}
+initrd ${url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

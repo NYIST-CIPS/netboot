@@ -1,0 +1,29 @@
+#!ipxe
+
+# IPFire
+# https://www.ipfire.org/
+
+goto ${menu} ||
+
+:ipfire
+clear osversion
+set os IPFire
+menu ${os}
+item 2.29-core185 ${space} ${os} 2.29 Core185
+isset ${osversion} || choose osversion || goto linux_menu
+echo ${cls}
+set dir ${ipfire_base_dir}/${osversion}/images/x86_64
+goto ipfire_images
+
+:ipfire_images
+imgfree
+kernel ${ipfire_mirror}/${dir}/vmlinuz vga=791 initrd=initrd.magic ${cmdline}
+initrd ${ipfire_mirror}/${dir}/instroot
+echo
+echo MD5sums:
+md5sum vmlinuz instroot
+boot
+
+:ipfire_exit
+clear menu
+exit 0

@@ -1,0 +1,24 @@
+#!ipxe
+
+goto ${menu} ||
+
+:unix_menu
+menu Unix Installers
+item --gap Unix Distros:
+item smartos ${space} SmartOS
+choose menu || goto unix_exit
+echo ${cls}
+goto ${menu} ||
+iseq ${sigs_enabled} true && goto verify_sigs || goto change_menu
+
+:verify_sigs
+imgverify ${menu}.ipxe ${sigs}${menu}.ipxe.sig || goto error
+goto change_menu
+
+:change_menu
+chain ${menu}.ipxe || goto error
+goto unix_menu
+
+:unix_exit
+clear menu
+exit 0

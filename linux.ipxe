@@ -1,0 +1,55 @@
+#!ipxe
+
+goto ${menu} ||
+
+:linux_menu
+menu Linux Installers - Current Arch [ ${arch} ]
+item --gap Linux Distros:
+item almalinux ${space} AlmaLinux
+item alpinelinux ${space} Alpine Linux
+item archlinux ${space} Arch Linux
+item blackarch ${space} BlackArch
+item centos ${space} CentOS
+item debian ${space} Debian
+item devuan ${space} Devuan
+item fedora ${space} Fedora
+item coreos ${space} Fedora CoreOS
+item flatcar ${space} Flatcar Container Linux
+item gentoo ${space} Gentoo
+item harvester ${space} Harvester
+item ipfire ${space} IPFire
+item k3os ${space} k3OS
+item kali ${space} Kali Linux
+item mageia ${space} Mageia
+item nixos ${space} NixOS
+item openEuler ${space} openEuler
+item opensuse ${space} openSUSE
+item oracle ${space} Oracle Linux
+item proxmox ${space} Proxmox
+item rhel ${space} Red Hat Enterprise Linux
+item rockylinux ${space} Rocky Linux
+item scientific ${space} Scientific Linux
+item slackware ${space} Slackware
+item talos ${space} Talos
+item tinycore ${space} Tiny Core Linux
+item ubuntu ${space} Ubuntu
+item vmware ${space} VMware ESXi
+item photon ${space} VMware Photon
+item vyos ${space} VyOS
+item zeninstall ${space} Zen Installer Arch
+choose menu || goto linux_exit
+echo ${cls}
+goto ${menu} ||
+iseq ${sigs_enabled} true && goto verify_sigs || goto change_menu
+
+:verify_sigs
+imgverify ${menu}.ipxe ${sigs}${menu}.ipxe.sig || goto error
+goto change_menu
+
+:change_menu
+chain ${menu}.ipxe || goto error
+goto linux_menu
+
+:linux_exit
+clear menu
+exit 0

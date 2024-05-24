@@ -1,0 +1,93 @@
+#!ipxe
+
+# Proxmox Open Source Products
+# https://www.proxmox.com
+
+goto ${menu} ||
+
+:proxmox
+clear proxmox_choice
+clear proxmox_version
+set os Proxmox
+menu ${os}
+item --gap ${os} Backup Server
+item pbs-normal ${space} ${os} Backup Server 3.2-1
+item pbs-text ${space} ${os} Backup Server 3.2-1 (Text)
+item pbs-debug ${space} ${os} Backup Server 3.2-1 (Debug)
+item --gap ${os} Mail Gateway
+item pmg-normal ${space} ${os} Mail Gateway 8.1-1
+item pmg-text ${space} ${os} Mail Gateway 8.1-1 (Text)
+item pmg-debug ${space} ${os} Mail Gateway 8.1-1 (Debug)
+item --gap ${os} VE
+item pve-normal ${space} ${os} VE 8.2-1
+item pve-text ${space} ${os} VE 8.2-1 (Text)
+item pve-debug ${space} ${os} VE 8.2-1 (Debug)
+choose proxmox_choice || goto proxmox_exit
+goto ${proxmox_choice}
+
+:pve-normal
+set params splash=silent
+goto boot-pve
+
+:pve-text
+set params splash=silent proxtui
+goto boot-pve
+
+:pve-debug
+set params splash=verbose proxdebug
+goto boot-pve
+
+:pmg-normal
+set params splash=silent
+goto boot-pmg
+
+:pmg-text
+set params splash=silent proxtui
+goto boot-pmg
+
+:pmg-debug
+set params splash=verbose proxdebug
+goto boot-pmg
+
+:pbs-normal
+set params splash=silent
+goto boot-pbs
+
+:pbs-text
+set params splash=silent proxtui
+goto boot-pbs
+
+:pbs-debug
+set params splash=verbose proxdebug
+goto boot-pbs
+
+:boot-pbs
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/3.2-1-f308cf4b/
+set proxmox_version 3.2-1
+imgfree
+kernel ${kernel_url}vmlinuz vga=791 video=vesafb:ywrap,mtrr ramdisk_size=16777216 rw quiet ${params} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+initrd ${kernel_url}proxmox.iso /proxmox.iso
+boot
+
+:boot-pmg
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/8.1-1-8374c64d/
+set proxmox_version 8.1-1
+imgfree
+kernel ${kernel_url}vmlinuz vga=791 video=vesafb:ywrap,mtrr ramdisk_size=16777216 rw quiet ${params} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+initrd ${kernel_url}proxmox.iso /proxmox.iso
+boot
+
+:boot-pve
+set kernel_url ${live_endpoint}/asset-mirror/releases/download/8.2-1-613c19ff/
+set proxmox_version 8.2-1
+imgfree
+kernel ${kernel_url}vmlinuz vga=791 video=vesafb:ywrap,mtrr ramdisk_size=16777216 rw quiet ${params} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+initrd ${kernel_url}proxmox.iso /proxmox.iso
+boot
+
+:proxmox_exit
+clear menu
+exit 0

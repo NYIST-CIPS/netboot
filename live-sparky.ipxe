@@ -1,0 +1,66 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os SparkyLinux Live
+menu ${os}
+item --gap ${os} Versions
+item stable ${space} ${os} Stable
+item rolling ${space} ${os} Rolling
+choose live_version || goto live_exit
+menu ${os} ${live_version}
+item --gap ${os} Flavors
+goto ${live_version}
+
+:stable
+item sparky-stable-gui ${space} Sparky stable Xfce
+item sparky-stable-lxqt ${space} Sparky stable Lxqt
+item sparky-stable-mingui ${space} Sparky stable Xfce-Min
+goto flavor_select
+
+:rolling
+item sparky-rolling-gui ${space} Sparky rolling Xfce
+item sparky-rolling-lxqt ${space} Sparky rolling Lxqt
+item sparky-rolling-mingui ${space} Sparky rolling Xfce-Min
+goto flavor_select
+
+:flavor_select
+choose flavor || goto live_menu
+echo ${cls}
+goto ${flavor} ||
+
+:sparky-rolling-gui
+set squash_url ${live_endpoint}/debian-squash/releases/download/2024.05-66a56f08/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/2024.05-66a56f08/
+goto boot
+:sparky-rolling-lxqt
+set squash_url ${live_endpoint}/debian-squash/releases/download/2024.05-2b965fd7/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/2024.05-2b965fd7/
+goto boot
+:sparky-rolling-mingui
+set squash_url ${live_endpoint}/debian-squash/releases/download/2024.05-db19bb55/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/2024.05-db19bb55/
+goto boot
+:sparky-stable-gui
+set squash_url ${live_endpoint}/debian-squash/releases/download/7.3-d38c17d0/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/7.3-d38c17d0/
+goto boot
+:sparky-stable-lxqt
+set squash_url ${live_endpoint}/debian-squash/releases/download/7.3-f9c9e1f1/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/7.3-f9c9e1f1/
+goto boot
+:sparky-stable-mingui
+set squash_url ${live_endpoint}/debian-squash/releases/download/7.3-6c87e83c/filesystem.squashfs
+set kernel_url ${live_endpoint}/debian-squash/releases/download/7.3-6c87e83c/
+goto boot
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz boot=live fetch=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

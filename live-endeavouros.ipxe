@@ -1,0 +1,27 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os EndeavourOS
+menu ${os}
+set ipparam BOOTIF=${netX/mac} ip=dhcp net.ifnames=0
+item --gap ${os} Versions
+item Galileo-11-2023 ${space} ${os} Galileo-11-2023
+choose live_version || goto live_exit
+goto ${live_version}
+
+:Galileo-11-2023
+set url ${live_endpoint}/asset-mirror/releases/download/Galileo-11-2023-e0c48f1f/
+goto boot
+
+
+:boot
+imgfree
+kernel ${url}vmlinuz ${ipparam} archiso_http_srv=${url} archisobasedir=arch cow_spacesize=10G earlymodules=loop modules-load=loop rd.modules-load=loop nvidia nouveau.modeset=0 nouveau.blacklist=yes modprobe.blacklist=nouveau i915.modeset=1 radeon.modeset=1 initrd=initrd.magic ${cmdline}
+initrd ${url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

@@ -1,0 +1,38 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Zorin Live
+menu ${os}
+item --gap ${os} Versions
+item 17.1 ${space} ${os} 17.1
+choose live_version || goto live_exit
+menu ${os} ${live_version}
+item --gap ${os} Flavors
+goto ${live_version}
+
+:17.1
+item zorin-core-squash ${space} Zorin 17.1 Core
+goto flavor_select
+
+:flavor_select
+choose flavor || goto live_menu
+echo ${cls}
+goto ${flavor} ||
+
+:zorin-core-squash
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/17.1-a87e018b/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/17.1-a87e018b/
+goto boot
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=url url=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0
+

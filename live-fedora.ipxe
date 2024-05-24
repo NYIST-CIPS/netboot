@@ -1,0 +1,117 @@
+#!ipxe
+
+isset ${dhcp-server} && set ipparam ip=dhcp || set ipparam ip=${ip}::${gateway}:${netmask}:::none nameserver=${dns}
+set ipparam BOOTIF=${netX/mac} ${ipparam}
+
+goto ${menu} ||
+
+:live_menu
+set os Fedora Live
+menu ${os}
+item --gap ${os} Versions
+item 40 ${space} ${os} 40
+item 39 ${space} ${os} 39
+item 38 ${space} ${os} 38
+choose live_version || goto live_exit
+menu ${os} ${live_version}
+item --gap ${os} Flavors
+goto ${live_version}
+
+:40
+item fedora-40-gnome ${space} Fedora 40 Gnome
+goto flavor_select
+:39
+item fedora-39-Cinnamon ${space} Fedora 39 Cinnamon
+item fedora-39-KDE ${space} Fedora 39 Kde
+item fedora-39-LXDE ${space} Fedora 39 Lxde
+item fedora-39-LXQt ${space} Fedora 39 Lxqt
+item fedora-39-MATE_Compiz ${space} Fedora 39 Mate_compiz
+item fedora-39-SoaS ${space} Fedora 39 Soas
+item fedora-39-Xfce ${space} Fedora 39 Xfce
+item fedora-39-gnome ${space} Fedora 39 Gnome
+item fedora-39-i3 ${space} Fedora 39 I3
+goto flavor_select
+:38
+item fedora-38-Cinnamon ${space} Fedora 38 Cinnamon
+item fedora-38-KDE ${space} Fedora 38 Kde
+item fedora-38-LXDE ${space} Fedora 38 Lxde
+item fedora-38-LXQt ${space} Fedora 38 Lxqt
+item fedora-38-MATE_Compiz ${space} Fedora 38 Mate_compiz
+item fedora-38-SoaS ${space} Fedora 38 Soas
+item fedora-38-Xfce ${space} Fedora 38 Xfce
+item fedora-38-gnome ${space} Fedora 38 Gnome
+item fedora-38-i3 ${space} Fedora 38 I3
+goto flavor_select
+
+:flavor_select
+choose flavor || goto live_menu
+echo ${cls}
+goto ${flavor} ||
+
+:fedora-38-Cinnamon
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.6-777dc12b/
+goto boot
+:fedora-38-KDE
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.6-cb69598e/
+goto boot
+:fedora-38-LXDE
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.6-a20bfa52/
+goto boot
+:fedora-38-LXQt
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.6-65a81f68/
+goto boot
+:fedora-38-MATE_Compiz
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.6-7e8150df/
+goto boot
+:fedora-38-SoaS
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.6-508d8fd6/
+goto boot
+:fedora-38-Xfce
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.6-56ddbe0b/
+goto boot
+:fedora-38-gnome
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.6-cf0a667b/
+goto boot
+:fedora-38-i3
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.6-11d75d21/
+goto boot
+:fedora-39-Cinnamon
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.5-07a94bbb/
+goto boot
+:fedora-39-KDE
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.5-a9bc94b4/
+goto boot
+:fedora-39-LXDE
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.5-e3694b17/
+goto boot
+:fedora-39-LXQt
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.5-8da34938/
+goto boot
+:fedora-39-MATE_Compiz
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.5-6fcbc121/
+goto boot
+:fedora-39-SoaS
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.5-73bb8f8d/
+goto boot
+:fedora-39-Xfce
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.5-c03946cc/
+goto boot
+:fedora-39-gnome
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.5-0ccbf396/
+goto boot
+:fedora-39-i3
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.5-db983595/
+goto boot
+:fedora-40-gnome
+set live_url ${live_endpoint}/fedora-assets/releases/download/1.14-aefc8f89/
+goto boot
+
+:boot
+imgfree
+kernel ${live_url}vmlinuz ${ipparam} root=live:${live_url}squashfs.img ro rd.live.image rd.lvm=0 rd.luks=0 rd.md=0 rd.dm=0 initrd=initrd.magic ${cmdline}
+initrd ${live_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

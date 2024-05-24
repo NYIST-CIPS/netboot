@@ -1,0 +1,32 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Feren OS Live
+menu ${os}
+item --gap ${os} Versions
+item current ${space} ${os} Current
+choose live_version || goto live_exit
+menu ${os} ${live_version}
+item --gap ${os} Flavors
+goto ${live_version}
+
+:current
+item /ubuntu-squash/releases/download/2023.01-2aadd48c/ ${space} Feren 2023.01
+item /ubuntu-squash/releases/download/12-2019-b43afc5c/ ${space} Feren Classic
+choose path || goto live_menu
+goto feren-boot
+
+:feren-boot
+imgfree
+set squash_url ${live_endpoint}${path}filesystem.squashfs
+set kernel_url ${live_endpoint}${path}
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=http fetch=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0
+

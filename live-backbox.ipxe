@@ -1,0 +1,27 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os BackBox
+menu ${os}
+item --gap ${os} Versions
+item 8.1 ${space} ${os} 8.1
+choose live_version || goto live_exit
+goto ${live_version}
+
+:8.1
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/8.1-c2287989/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/8.1-c2287989/
+goto boot-os
+
+:boot-os
+imgfree
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=url url=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0
+

@@ -1,0 +1,33 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Bodhi
+menu ${os}
+item --gap ${os} Versions
+item 7.0.0-apppack ${space} ${os} 7.0.0 apppack
+item 7.0.0-standard ${space} ${os} 7.0.0 standard
+choose live_version || goto live_exit
+goto ${live_version}
+
+:7.0.0-apppack
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/7.0.0-c167c30e/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/7.0.0-c167c30e/
+goto boot-os
+
+:7.0.0-standard
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/7.0.0-a4394ab0/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/7.0.0-a4394ab0/
+goto boot-os
+
+
+:boot-os
+imgfree
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=url url=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

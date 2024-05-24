@@ -1,0 +1,26 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os KDE Neon
+menu ${os}
+item --gap ${os} Versions
+item user ${space} ${os} User
+choose live_version || goto live_exit
+goto ${live_version}
+
+:user
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/20240522-1729-9b372e2a/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/20240522-1729-9b372e2a/
+goto user-boot
+
+:user-boot
+imgfree
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=url url=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd.lz
+boot
+
+:live_exit
+clear menu
+exit 0

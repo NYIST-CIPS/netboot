@@ -1,0 +1,40 @@
+#!ipxe
+
+goto ${menu} ||
+
+:live_menu
+set os Kodachi
+menu ${os}
+item --gap ${os} Versions
+item 6 ${space} ${os} 6
+item 7 ${space} ${os} 7
+item 8 ${space} ${os} 8
+choose live_version || goto live_exit
+goto ${live_version}
+
+
+:6
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/6.2-2a23039c/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/6.2-2a23039c/
+goto boot
+
+:7
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/7.6-5b1ead62/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/7.6-5b1ead62/
+goto boot
+
+:8
+set squash_url ${live_endpoint}/ubuntu-squash/releases/download/8.2-625e11fa/filesystem.squashfs
+set kernel_url ${live_endpoint}/ubuntu-squash/releases/download/8.2-625e11fa/
+goto boot
+
+
+:boot
+imgfree
+kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=http fetch=${squash_url} initrd=initrd.magic ${cmdline}
+initrd ${kernel_url}initrd
+boot
+
+:live_exit
+clear menu
+exit 0

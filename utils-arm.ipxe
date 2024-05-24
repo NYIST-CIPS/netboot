@@ -1,0 +1,17 @@
+#!ipxe
+
+menu Utilities
+item --gap Utilities:
+item --gap netboot.xyz tools:
+item nbxyz ${space} netboot.xyz endpoints
+choose --default ${menu} menu || goto utils_exit
+echo ${cls}
+goto ${menu} ||
+chain ${menu}.ipxe || goto utils_exit
+goto utils_exit
+
+
+
+:utils_exit
+clear menu
+exit 0
